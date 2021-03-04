@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
+import nl.hu.cisq1.lingo.domain.exception.RoundDoesNotBelongToGameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,5 +46,18 @@ class GameTest {
         game.newRound(new Word("woord"));
 
         assertEquals(1, game.getRounds().size());
+    }
+
+    @Test
+    @DisplayName("exception: the attempt limit is reached! You may not make another guess!")
+    void roundDoesNotBelongToGame() {
+        Game game = new Game(1L,  0, new ArrayList<>());
+
+        String word = "woord";
+        Round round = new Round(1, new Word(word), new ArrayList<>());
+
+        assertThrows(RoundDoesNotBelongToGameException.class, () -> {
+            game.addScore(round, 2);
+        });
     }
 }

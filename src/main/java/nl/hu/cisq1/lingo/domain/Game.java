@@ -35,10 +35,6 @@ public class Game {
             throw new RoundDoesNotBelongToGameException();
         }
 
-        if(attempts > 5) {
-            throw new RoundAttemptLimitException();
-        }
-
         this.score += 5 * (5 - attempts) + 5;
     }
 
