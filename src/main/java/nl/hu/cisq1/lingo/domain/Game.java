@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
 import nl.hu.cisq1.lingo.domain.exception.RoundDoesNotBelongToGameException;
 
 import javax.persistence.GeneratedValue;
