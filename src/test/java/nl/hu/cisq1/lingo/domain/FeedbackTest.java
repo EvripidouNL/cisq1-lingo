@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -49,7 +51,9 @@ class FeedbackTest {
     @Test
     @DisplayName("exception: the amount of marks is not the same as the length of the word!")
     void attemptNotSameAsMarks() {
-        assertThrows(FeedbackInvalidException.class, ()-> new Feedback("woord", Arrays.asList(Mark.INVALID, Mark.INVALID, Mark.INVALID)));
+        String attempt = "woord";
+        List<Mark> marks = Arrays.asList(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
+        assertThrows(FeedbackInvalidException.class, () -> new Feedback(attempt, marks));
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
