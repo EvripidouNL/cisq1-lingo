@@ -1,11 +1,15 @@
 package nl.hu.cisq1.lingo.domain;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @EqualsAndHashCode
 @ToString
 public class Feedback {

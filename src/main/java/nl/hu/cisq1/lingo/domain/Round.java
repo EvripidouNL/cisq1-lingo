@@ -2,15 +2,17 @@ package nl.hu.cisq1.lingo.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @EqualsAndHashCode
 @ToString
-@Getter
 public class Round {
     private final int number;
     private final Word word;
@@ -42,7 +44,7 @@ public class Round {
 
     public Feedback guessWord(String attempt) {
 
-        if(this.attempt >=5) {
+        if(this.attempt >= 5) {
             throw new RoundAttemptLimitException();
         }
 
