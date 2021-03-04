@@ -49,7 +49,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("exception: the attempt limit is reached! You may not make another guess!")
+    @DisplayName("exception: this Round does not belong to your Game!")
     void roundDoesNotBelongToGame() {
         Game game = new Game(1L,  0, new ArrayList<>());
 
