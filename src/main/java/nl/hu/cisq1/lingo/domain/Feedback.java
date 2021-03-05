@@ -33,7 +33,7 @@ public class Feedback {
         return marks.stream().allMatch(mark -> mark.equals(Mark.INVALID));
     }
 
-    public List<Character> giveHint() {
+    public Hint giveHint() {
         List<Character> characters = new ArrayList<>();
         int index = 0;
 
@@ -47,6 +47,6 @@ public class Feedback {
             index++;
         }
 
-        return characters;
+        return new Hint(characters);
     }
 }

@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.awt.image.AreaAveragingScaleFilter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -19,7 +16,7 @@ class FeedbackTest {
     @Test
     @DisplayName("word is guessed if all letters are correct")
     void wordisGuessed() {
-        Feedback feedback = new Feedback("woord", Arrays.asList(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
+        Feedback feedback = new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
 
         assertTrue(feedback.isWordGuessed());
     }
@@ -27,7 +24,7 @@ class FeedbackTest {
     @Test
     @DisplayName("word is not guessed if one or more letters are incorrect")
     void wordisNotGuessed() {
-        Feedback feedback = new Feedback("woord", Arrays.asList(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT));
+        Feedback feedback = new Feedback("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT));
 
         assertFalse(feedback.isWordGuessed());
     }
@@ -35,7 +32,7 @@ class FeedbackTest {
     @Test
     @DisplayName("guess is invalid")
     void guessIsInvalid() {
-        Feedback feedback = new Feedback("hetzelfde", Arrays.asList(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
+        Feedback feedback = new Feedback("hetzelfde", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
 
         assertTrue(feedback.guessIsInvalid());
     }
@@ -43,7 +40,7 @@ class FeedbackTest {
     @Test
     @DisplayName("guess is not invalid")
     void guessIsNotInvalid() {
-        Feedback feedback = new Feedback("woord", Arrays.asList(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
+        Feedback feedback = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
 
         assertFalse(feedback.guessIsInvalid());
     }
@@ -52,14 +49,14 @@ class FeedbackTest {
     @DisplayName("exception: the amount of marks is not the same as the length of the word!")
     void attemptNotSameAsMarks() {
         String attempt = "woord";
-        List<Mark> marks = Arrays.asList(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
+        List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
         assertThrows(FeedbackInvalidException.class, () -> new Feedback(attempt, marks));
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
     @DisplayName("a hint by a guessed word")
     @MethodSource("provideHintExamples")
-    void giveHint(String attempt, List<Mark> marks, List<Character> hint) {
+    void giveHint(String attempt, List<Mark> marks, Hint hint) {
         Feedback feedback = new Feedback(attempt, marks);
 
         assertEquals(hint, feedback.giveHint());
@@ -67,9 +64,9 @@ class FeedbackTest {
 
     private static Stream<Arguments> provideHintExamples() {
         return Stream.of(
-                Arguments.of("woord", Arrays.asList(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT), Arrays.asList('w', 'o', 'o', 'r', 'd')),
-                Arguments.of("woord", Arrays.asList(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.PRESENT), Arrays.asList('w', '.', 'o', '.', '.')),
-                Arguments.of("woord", Arrays.asList(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID), Arrays.asList('.', '.', '.', '.', '.'))
+                Arguments.of("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT), new Hint(List.of('w', 'o', 'o', 'r', 'd'))),
+                Arguments.of("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.PRESENT), new Hint(List.of('w', '.', 'o', '.', '.'))),
+                Arguments.of("woord", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID), new Hint(List.of('.', '.', '.', '.', '.')))
         );
     }
 }

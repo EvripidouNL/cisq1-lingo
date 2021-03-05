@@ -1,6 +1,5 @@
 package nl.hu.cisq1.lingo.domain;
 
-import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,13 +21,13 @@ class RoundTest {
 
         Round round = new Round(1, word,  new ArrayList<>());
 
-        assertEquals(Arrays.asList('w', '.', '.', '.', '.'), round.startRound());
+        assertEquals(new Hint(List.of('w', '.', '.', '.', '.')), round.startRound());
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
     @DisplayName("attempt compared to word")
     @MethodSource("provideGuessExamples")
-    void guessWord(String word, String attempt, List<Character> hint) {
+    void guessWord(String word, String attempt, Hint hint) {
         Round round = new Round(1, new Word(word), new ArrayList<>());
 
         round.startRound();
@@ -40,9 +38,9 @@ class RoundTest {
 
     private static Stream<Arguments> provideGuessExamples() {
         return Stream.of(
-                Arguments.of("woord", "woord", Arrays.asList('w', 'o', 'o', 'r', 'd')),
-                Arguments.of("woord", "soort", Arrays.asList('.', 'o', 'o', 'r', '.')),
-                Arguments.of("woord", "breuk", Arrays.asList('.', '.', '.', '.', '.'))
+                Arguments.of("woord", "woord", new Hint(List.of('w', 'o', 'o', 'r', 'd'))),
+                Arguments.of("woord", "soort", new Hint(List.of('.', 'o', 'o', 'r', '.'))),
+                Arguments.of("woord", "breuk", new Hint(List.of('.', '.', '.', '.', '.')))
         );
     }
 

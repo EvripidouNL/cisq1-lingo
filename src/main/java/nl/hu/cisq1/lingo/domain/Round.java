@@ -26,7 +26,7 @@ public class Round {
         this.feedbacks = feedbacks;
     }
 
-    public List<Character> startRound() {
+    public Hint startRound() {
         List<Character> characters = new ArrayList<>();
 
         for (int i=0; i< this.word.getLength(); i++) {
@@ -39,7 +39,7 @@ public class Round {
             }
         }
 
-        return characters;
+        return new Hint(characters);
     }
 
     public Feedback guessWord(String attempt) {

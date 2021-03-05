@@ -29,7 +29,7 @@ public class Game {
         this.rounds = rounds;
     }
 
-    public void addScore(Round round, int attempts) {
+    public void calculateScore(Round round, int attempts) {
         if (!this.rounds.contains(round)) {
             throw new RoundDoesNotBelongToGameException();
         }

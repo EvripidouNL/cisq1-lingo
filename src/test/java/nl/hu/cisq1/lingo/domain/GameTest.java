@@ -23,7 +23,7 @@ class GameTest {
 
         Round round = game.getRounds().get(game.getRounds().size() -1);
 
-        game.addScore(round, attempts);
+        game.calculateScore(round, attempts);
 
         assertEquals(score, game.getScore());
     }
@@ -57,7 +57,7 @@ class GameTest {
         Round round = new Round(1, new Word(word), new ArrayList<>());
 
         assertThrows(RoundDoesNotBelongToGameException.class, () -> {
-            game.addScore(round, 2);
+            game.calculateScore(round, 2);
         });
     }
 }
