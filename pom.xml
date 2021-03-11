@@ -23,7 +23,6 @@
         <sonar.exclusion>**/LingoApplication.*</sonar.exclusion>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
