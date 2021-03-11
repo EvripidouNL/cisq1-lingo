@@ -1,20 +1,29 @@
 package nl.hu.cisq1.lingo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "feedbacks")
 public class Feedback {
-    private final String attempt;
-    private final List<Mark> marks;
+    @Id
+    @Column(name = "feedback_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "attempt")
+    private String attempt;
+
+    @Column(name = "marks", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Mark.class)
+    private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
         if (attempt.length() != marks.size()) {

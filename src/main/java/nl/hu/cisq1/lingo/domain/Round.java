@@ -1,25 +1,33 @@
 package nl.hu.cisq1.lingo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
-
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "rounds")
 public class Round {
-    private final int number;
-    private final Word word;
+    @Id
+    @Column(name = "round_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long number;
+
+    @OneToOne
+    @JoinColumn(name = "word")
+    private Word word;
+
+    @Column(name = "attempt")
     private int attempt;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
     private List<Feedback> feedbacks;
 
-    public Round(int number, Word word, List<Feedback> feedbacks) {
+    public Round(Long number, Word word, List<Feedback> feedbacks) {
         this.number = number;
         this.word = word;
         this.attempt = 0;

@@ -54,7 +54,7 @@ class GameTest {
         Game game = new Game(1L,  0, new ArrayList<>());
 
         String word = "woord";
-        Round round = new Round(1, new Word(word), new ArrayList<>());
+        Round round = new Round(1L, new Word(word), new ArrayList<>());
 
         assertThrows(RoundDoesNotBelongToGameException.class, () -> {
             game.calculateScore(round, 2);

@@ -1,26 +1,26 @@
 package nl.hu.cisq1.lingo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundDoesNotBelongToGameException;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "lingogames")
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "game_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "score")
     private double score;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id")
     private List<Round> rounds;
 
     public Game(Long id, double score, List<Round> rounds) {
@@ -38,7 +38,7 @@ public class Game {
     }
 
     public void newRound(Word word) {
-        Round round = new Round(this.rounds.size() +1, word, new ArrayList<>());
+        Round round = new Round(this.rounds.size() +1L, word, new ArrayList<>());
 
         round.startRound();
 
