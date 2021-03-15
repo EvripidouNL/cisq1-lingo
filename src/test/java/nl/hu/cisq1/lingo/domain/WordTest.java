@@ -28,11 +28,8 @@ class WordTest {
     @Test
     @DisplayName("exception: word must be between 5 or 7 letters!")
     void wordLengthNotSupported() {
-        Word word = new Word("gebakjes");
-        int length = word.getLength();
-
         assertThrows(WordLengthNotSupportedException.class, () -> {
-
+            new Word("gebakjes");
         });
     }
 }
