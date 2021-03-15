@@ -35,9 +35,7 @@ public class TrainerService {
         Word word = new Word(randomWord);
 
         Game game = new Game(id, 0, new ArrayList<>());
-
         game.newRound(word);
-
         game.lastRound().startRound();
 
         this.gameRepository.save(game);
@@ -50,8 +48,8 @@ public class TrainerService {
     public GameDTO newRound(Game game) {
         String randomWord = wordService.provideRandomWord(game.getRounds().size() %3 +5);
         Word word = new Word(randomWord);
-        game.newRound(word);
 
+        game.newRound(word);
         game.lastRound().startRound();
 
         this.gameRepository.save(game);
