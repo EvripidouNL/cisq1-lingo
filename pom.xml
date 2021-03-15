@@ -21,8 +21,8 @@
         <sonar.organization>evripidou</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.exclusion>**/LingoApplication.*</sonar.exclusion>
-        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.16</org.projectlombok.version>
+        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
