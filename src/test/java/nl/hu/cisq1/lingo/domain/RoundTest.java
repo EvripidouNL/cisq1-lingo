@@ -50,16 +50,26 @@ class RoundTest {
         String word = "woord";
         Round round = new Round(1, new Word(word), new ArrayList<>());
 
-        Feedback feedback = new Feedback();
+        round.guessWord("moord");
+        round.guessWord("noord");
+        round.guessWord("koord");
+        round.guessWord("hoort");
+        round.guessWord("spoor");
 
-        round.getFeedbacks().add(feedback);
-        round.getFeedbacks().add(feedback);
-        round.getFeedbacks().add(feedback);
-        round.getFeedbacks().add(feedback);
-        round.getFeedbacks().add(feedback);
 
         assertThrows(RoundAttemptLimitException.class, () -> {
             round.guessWord("soort");
         });
+    }
+
+    @Test
+    @DisplayName("last Feedback of round")
+    void lastFeedback() {
+        String word = "woord";
+        Round round = new Round(1, new Word(word), new ArrayList<>());
+
+        Feedback feedback = round.guessWord("moord");
+
+        assertEquals(feedback, round.lastFeedback());
     }
 }

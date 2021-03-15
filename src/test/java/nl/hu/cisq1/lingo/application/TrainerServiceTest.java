@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -21,7 +23,7 @@ class TrainerServiceTest {
         SpringGameRepository gameRepository = mock(SpringGameRepository.class);
 
         when(gameRepository.findById(id))
-                .thenReturn(Optional.of(new Game(id)));
+                .thenReturn(Optional.of(new Game(id, 0, new ArrayList<>())));
 
         TrainerService trainerService = new TrainerService(gameRepository);
 
@@ -32,9 +34,9 @@ class TrainerServiceTest {
 
     static Stream<Arguments> gameByIdExamples() {
         return Stream.of(
-                Arguments.of(1L, new Game(1L)),
-                Arguments.of(2L, new Game(2L)),
-                Arguments.of(3L, new Game(3L))
+                Arguments.of(1L, new Game(1L, 0, new ArrayList<>())),
+                Arguments.of(2L, new Game(2L, 0, new ArrayList<>())),
+                Arguments.of(3L, new Game(3L, 0, new ArrayList<>()))
         );
     }
 }

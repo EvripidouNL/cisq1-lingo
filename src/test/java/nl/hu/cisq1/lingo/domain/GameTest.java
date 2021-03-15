@@ -59,4 +59,18 @@ class GameTest {
             game.calculateScore(round, 2);
         });
     }
+
+    @Test
+    @DisplayName("last Feedback of round")
+    void lastRound() {
+        Game game = new Game(1L, 0, new ArrayList<>());
+        String roundWord = "woord";
+        Word word = new Word(roundWord);
+
+        Round round = game.newRound(word);
+
+        round.guessWord("moord");
+
+        assertEquals(round, game.lastRound());
+    }
 }

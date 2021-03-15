@@ -27,7 +27,7 @@ public class Feedback {
     private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
-        if (attempt.length() != marks.size() && marks.size() != 0) {
+        if (attempt.length() != marks.size() && !marks.isEmpty()) {
             throw new FeedbackInvalidException();
         }
 

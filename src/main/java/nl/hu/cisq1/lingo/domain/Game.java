@@ -22,10 +22,6 @@ public class Game {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Round> rounds;
 
-    public  Game (Long gameId) {
-        this.gameId = gameId;
-    }
-
     public Game(Long gameId, int score, List<Round> rounds) {
         this.gameId = gameId;
         this.score = score;
@@ -40,12 +36,14 @@ public class Game {
         this.score += 5 * (5 - attempts) + 5;
     }
 
-    public void newRound(Word word) {
+    public Round newRound(Word word) {
         int totalRounds = this.rounds.size();
 
         Round round = new Round(totalRounds +1, word, new ArrayList<>());
 
         this.rounds.add(round);
+
+        return round;
     }
 
     public Round lastRound() {
