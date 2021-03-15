@@ -14,17 +14,20 @@ public class Game {
     @Id
     @Column(name = "game_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long gameId;
 
     @Column(name = "score")
-    private double score;
+    private int score;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
     private List<Round> rounds;
 
-    public Game(Long id, double score, List<Round> rounds) {
-        this.id = id;
+    public  Game (Long gameId) {
+        this.gameId = gameId;
+    }
+
+    public Game(Long gameId, int score, List<Round> rounds) {
+        this.gameId = gameId;
         this.score = score;
         this.rounds = rounds;
     }
@@ -38,10 +41,14 @@ public class Game {
     }
 
     public void newRound(Word word) {
-        Round round = new Round(this.rounds.size() +1L, word, new ArrayList<>());
+        int totalRounds = this.rounds.size();
 
-        round.startRound();
+        Round round = new Round(totalRounds +1, word, new ArrayList<>());
 
         this.rounds.add(round);
+    }
+
+    public Round lastRound() {
+        return this.rounds.get(this.rounds.size() -1);
     }
 }

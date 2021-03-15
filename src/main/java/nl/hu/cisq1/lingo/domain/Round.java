@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
 import javax.persistence.*;
@@ -14,23 +15,23 @@ public class Round {
     @Id
     @Column(name = "round_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long number;
+    @JsonIgnore
+    private Long roundId;
+
+    @Column(name = "number")
+    private int number;
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "word")
     private Word word;
 
-    @Column(name = "attempt")
-    private int attempt;
-
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "round_id")
     private List<Feedback> feedbacks;
 
-    public Round(Long number, Word word, List<Feedback> feedbacks) {
+    public Round(int number, Word word, List<Feedback> feedbacks) {
         this.number = number;
         this.word = word;
-        this.attempt = 0;
         this.feedbacks = feedbacks;
     }
 
@@ -51,8 +52,7 @@ public class Round {
     }
 
     public Feedback guessWord(String attempt) {
-
-        if(this.attempt >= 5) {
+        if(this.feedbacks.size() >= 5) {
             throw new RoundAttemptLimitException();
         }
 
@@ -69,8 +69,13 @@ public class Round {
             }
         }
 
-        this.attempt++;
+        Feedback feedback = new Feedback(attempt, marks);
+        feedbacks.add(feedback);
 
-        return new Feedback(attempt, marks);
+        return feedback;
+    }
+
+    public Feedback lastFeedback() {
+        return this.feedbacks.get(this.feedbacks.size() -1);
     }
 }

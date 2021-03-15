@@ -1,12 +1,9 @@
 package nl.hu.cisq1.lingo.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
+import lombok.Data;
 import java.util.List;
 
-@EqualsAndHashCode
-@ToString
+@Data
 public class Hint {
     private List<Character> characterList;
 

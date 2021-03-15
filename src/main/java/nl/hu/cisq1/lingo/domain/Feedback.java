@@ -1,8 +1,8 @@
 package nl.hu.cisq1.lingo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,8 @@ public class Feedback {
     @Id
     @Column(name = "feedback_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonIgnore
+    private Long feedbackId;
 
     @Column(name = "attempt")
     private String attempt;
@@ -26,7 +27,7 @@ public class Feedback {
     private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
-        if (attempt.length() != marks.size()) {
+        if (attempt.length() != marks.size() && marks.size() != 0) {
             throw new FeedbackInvalidException();
         }
 
