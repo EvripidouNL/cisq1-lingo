@@ -8,8 +8,4 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface GameMapper {
     GameDTO toGameDTO(Game game, Hint hint);
-
-    List<GameDTO> toGameDTOs(List<Game> games);
-
-    Game toGame(GameDTO gameDTO);
 }
