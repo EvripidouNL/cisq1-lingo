@@ -7,12 +7,14 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class GameDTO {
-    public Long gameId;
+    private Long gameId;
 
-    public int score;
+    private int score;
 
-    public List<Round> rounds;
+    private List<Round> rounds;
 
-    public Hint hint;
+    private Hint hint;
 }
