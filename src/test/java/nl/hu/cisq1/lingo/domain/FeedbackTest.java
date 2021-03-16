@@ -48,18 +48,12 @@ class FeedbackTest {
         assertFalse(feedback.guessIsInvalid());
     }
 
-    @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
+    @Test
     @DisplayName("exception: the amount of marks is not the same as the length of the word!")
-    @MethodSource("provideFeedbackExamples")
-    void attemptNotSameAsMarks(String attempt, List<Mark> marks) {
+    void attemptNotSameAsMarks() {
+        String attempt = "woord";
+        List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
         assertThrows(FeedbackInvalidException.class, () -> new Feedback(attempt, marks));
-    }
-
-    private static Stream<Arguments> provideFeedbackExamples() {
-        return Stream.of(
-                Arguments.of("woord", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID)),
-                Arguments.of("woord", List.of(""))
-        );
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
