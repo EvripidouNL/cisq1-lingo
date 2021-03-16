@@ -19,9 +19,17 @@ class WordTest {
 
     @Test
     @DisplayName("exception: word must be between 5 or 7 letters!")
-    void wordLengthNotSupported() {
+    void wordLengthAboveZeven() {
         assertThrows(WordLengthNotSupportedException.class, () -> {
             new Word("gebakjes");
+        });
+    }
+
+    @Test
+    @DisplayName("exception: word must be between 5 or 7 letters!")
+    void wordLengthNotSupported() {
+        assertThrows(WordLengthNotSupportedException.class, () -> {
+            new Word("man");
         });
     }
 }
