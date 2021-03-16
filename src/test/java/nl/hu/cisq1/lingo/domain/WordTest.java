@@ -25,7 +25,7 @@ class WordTest {
 
     @ParameterizedTest
     @MethodSource("provideWordExamples")
-    @DisplayName("exception: the word length must be between 5 and 7")
+    @DisplayName("exception: the word length must be between 5 and 7 letters")
     void invalidWordLength(String word) {
         assertThrows(
                 WordLengthNotSupportedException.class,
