@@ -3,6 +3,12 @@ package nl.hu.cisq1.lingo.domain;
 import nl.hu.cisq1.lingo.domain.exception.WordLengthNotSupportedException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,19 +23,20 @@ class WordTest {
         assertEquals(5, length);
     }
 
-    @Test
-    @DisplayName("exception: word must be between 5 or 7 letters!")
-    void wordLengthAboveZeven() {
-        assertThrows(WordLengthNotSupportedException.class, () -> {
-            new Word("gebakjes");
-        });
+    @ParameterizedTest
+    @MethodSource("provideWordExamples")
+    @DisplayName("exception: the word length must be between 5 and 7")
+    void invalidWordLength(String word) {
+        assertThrows(
+                WordLengthNotSupportedException.class,
+                () -> new Word(word)
+        );
     }
 
-    @Test
-    @DisplayName("exception: word must be between 5 or 7 letters!")
-    void wordLengthNotSupported() {
-        assertThrows(WordLengthNotSupportedException.class, () -> {
-            new Word("man");
-        });
+    private static Stream<Arguments> provideWordExamples() {
+        return Stream.of(
+                Arguments.of("gast"),
+                Arguments.of("gebakjes")
+        );
     }
 }
