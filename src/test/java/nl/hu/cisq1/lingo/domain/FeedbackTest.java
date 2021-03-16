@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -47,12 +48,18 @@ class FeedbackTest {
         assertFalse(feedback.guessIsInvalid());
     }
 
-    @Test
+    @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
     @DisplayName("exception: the amount of marks is not the same as the length of the word!")
-    void attemptNotSameAsMarks() {
-        String attempt = "woord";
-        List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
+    @MethodSource("provideFeedbackExamples")
+    void attemptNotSameAsMarks(String attempt, List<Mark> marks) {
         assertThrows(FeedbackInvalidException.class, () -> new Feedback(attempt, marks));
+    }
+
+    private static Stream<Arguments> provideFeedbackExamples() {
+        return Stream.of(
+                Arguments.of("woord", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID)),
+                Arguments.of("woord", List.of(""))
+        );
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
