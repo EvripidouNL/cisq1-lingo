@@ -2,6 +2,8 @@ package nl.hu.cisq1.lingo.domain;
 
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundDoesNotBelongToGameException;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +21,12 @@ public class Game {
     @Column(name = "score")
     private int score;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
+    @JoinColumn
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Round> rounds;
 
-    public Game(Long gameId, int score, List<Round> rounds) {
-        this.gameId = gameId;
+    public Game(int score, List<Round> rounds) {
         this.score = score;
         this.rounds = rounds;
     }
@@ -37,9 +40,7 @@ public class Game {
     }
 
     public Round newRound(Word word) {
-        int totalRounds = this.rounds.size();
-
-        Round round = new Round(totalRounds +1, word, new ArrayList<>());
+        Round round = new Round(word, new ArrayList<>());
 
         this.rounds.add(round);
 

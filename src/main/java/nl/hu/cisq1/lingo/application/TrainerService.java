@@ -30,11 +30,11 @@ public class TrainerService {
         return gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException(id));
     }
 
-    public GameDTO startNewGame(Long id) {
+    public GameDTO startNewGame() {
         String randomWord = wordService.provideRandomWord(5);
         Word word = new Word(randomWord);
 
-        Game game = new Game(id, 0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>());
         game.newRound(word);
         game.lastRound().startRound();
 

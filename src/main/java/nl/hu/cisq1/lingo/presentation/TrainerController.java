@@ -18,8 +18,8 @@ public class TrainerController {
 
     @PostMapping("/create")
     // For creating a new Lingo gameId
-    public GameDTO createGame(Long id) {
-        return this.trainerService.startNewGame(id);
+    public GameDTO createGame() {
+        return this.trainerService.startNewGame();
     }
 
     @PostMapping("/game/{gameById}/round")

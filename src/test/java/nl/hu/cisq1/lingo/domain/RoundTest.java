@@ -19,7 +19,7 @@ class RoundTest {
     void showFirstLetterOfWord() {
         Word word = new Word("woord");
 
-        Round round = new Round(1, word,  new ArrayList<>());
+        Round round = new Round(word,  new ArrayList<>());
 
         assertEquals(new Hint(List.of('w', '.', '.', '.', '.')), round.startRound());
     }
@@ -28,7 +28,7 @@ class RoundTest {
     @DisplayName("attempt compared to word")
     @MethodSource("provideGuessExamples")
     void guessWord(String word, String attempt, Hint hint) {
-        Round round = new Round(1, new Word(word), new ArrayList<>());
+        Round round = new Round(new Word(word), new ArrayList<>());
 
         round.startRound();
         Feedback feedback = round.guessWord(attempt);
@@ -48,7 +48,7 @@ class RoundTest {
     @DisplayName("exception: the attempt limit is reached! You may not make another guess!")
     void attemptLimitReached() {
         String word = "woord";
-        Round round = new Round(1, new Word(word), new ArrayList<>());
+        Round round = new Round(new Word(word), new ArrayList<>());
 
         round.guessWord("moord");
         round.guessWord("noord");
@@ -66,7 +66,7 @@ class RoundTest {
     @DisplayName("last Feedback of round")
     void lastFeedback() {
         String word = "woord";
-        Round round = new Round(1, new Word(word), new ArrayList<>());
+        Round round = new Round(new Word(word), new ArrayList<>());
 
         Feedback feedback = round.guessWord("moord");
 

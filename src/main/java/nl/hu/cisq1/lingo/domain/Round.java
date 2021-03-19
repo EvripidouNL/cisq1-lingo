@@ -3,6 +3,8 @@ package nl.hu.cisq1.lingo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,19 +20,17 @@ public class Round {
     @JsonIgnore
     private Long roundId;
 
-    @Column(name = "number")
-    private int number;
-
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "word")
     private Word word;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn
     private List<Feedback> feedbacks;
 
-    public Round(int number, Word word, List<Feedback> feedbacks) {
-        this.number = number;
+    public Round(Word word, List<Feedback> feedbacks) {
         this.word = word;
         this.feedbacks = feedbacks;
     }

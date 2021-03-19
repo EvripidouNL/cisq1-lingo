@@ -16,7 +16,7 @@ class GameTest {
     @DisplayName("score based on attempts in round")
     @MethodSource("provideAttemptExamples")
     void addScore(String word, int attempts, int score) {
-        Game game = new Game(1L, 0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>());
 
         game.newRound(new Word(word));
 
@@ -40,7 +40,7 @@ class GameTest {
     @Test
     @DisplayName("add one new round to game")
     void newRound() {
-        Game game = new Game(1L, 0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>());
 
         game.newRound(new Word("woord"));
 
@@ -50,10 +50,10 @@ class GameTest {
     @Test
     @DisplayName("exception: this Round does not belong to your Game!")
     void roundDoesNotBelongToGame() {
-        Game game = new Game(1L, 0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>());
 
         String word = "woord";
-        Round round = new Round(1, new Word(word), new ArrayList<>());
+        Round round = new Round(new Word(word), new ArrayList<>());
 
         assertThrows(RoundDoesNotBelongToGameException.class, () -> {
             game.calculateScore(round, 2);
@@ -63,7 +63,7 @@ class GameTest {
     @Test
     @DisplayName("last Feedback of round")
     void lastRound() {
-        Game game = new Game(1L, 0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>());
         String roundWord = "woord";
         Word word = new Word(roundWord);
 

@@ -7,6 +7,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface GameMapper {
-    @Mapping(target = "round", expression = "java(game.lastRound())")
+    @Mapping(target = "feedbackList", expression = "java(game.lastRound().getFeedbacks())")
+    @Mapping(target = "attemptsLeft", expression = "java(5 - game.lastRound().getFeedbacks().size())")
+    @Mapping(target = "roundNumber", expression = "java(game.getRounds().size())")
     GameDTO toGameDTO(Game game, Hint hint);
 }
