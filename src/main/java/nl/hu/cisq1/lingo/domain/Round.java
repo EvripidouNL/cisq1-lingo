@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
 import org.hibernate.annotations.Cascade;
 
@@ -54,6 +55,10 @@ public class Round {
     public Feedback guessWord(String attempt) {
         if(this.feedbacks.size() >= 5) {
             throw new RoundAttemptLimitException();
+        }
+
+        if(!attempt.equals(word.getValue())) {
+            throw new FeedbackInvalidException();
         }
 
         List<Mark> marks = new ArrayList<>();

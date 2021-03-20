@@ -53,7 +53,7 @@ class TrainerServiceTest {
 
         assertThrows(
                 GameNotFoundException.class,
-                () -> trainerService.findById(1L)
+                () -> trainerService.findById(0L)
         );
     }
 }
