@@ -13,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import javax.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -57,7 +54,7 @@ class TrainerServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("attempt is equal to word")
+    @DisplayName("word is guessed in one attempt")
     void guessWord() {
         GameDTO gameDTO = trainerService.startNewGame();
 
