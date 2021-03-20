@@ -57,13 +57,11 @@ public class Round {
         }
 
         List<Mark> marks = new ArrayList<>();
-        Feedback feedback = new Feedback(attempt, marks);
 
         for (int i=0; i< this.word.getLength(); i++) {
 
             if (attempt.charAt(i) == word.getValue().charAt(i)) {
                 marks.add(Mark.CORRECT);
-                feedback.isWordGuessed();
             } else if (word.getValue().contains(attempt.charAt(i) + "")) {
               marks.add(Mark.PRESENT);
             } else {
@@ -71,7 +69,9 @@ public class Round {
             }
         }
 
+        Feedback feedback = new Feedback(attempt, marks);
         feedbacks.add(feedback);
+
         return feedback;
     }
 
