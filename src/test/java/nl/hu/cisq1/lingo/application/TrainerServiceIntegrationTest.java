@@ -59,14 +59,14 @@ class TrainerServiceIntegrationTest {
     @Test
     @DisplayName("attempt is equal to word")
     void guessWord() {
-        Word word = new Word("woord");
-
         GameDTO gameDTO = trainerService.startNewGame();
 
         Game game = gameRepository.findById(gameDTO.getGameId()).get();
 
+        game.lastRound().setWord(new Word("woord"));
+
         trainerService.makeGuess(game, "woord");
 
-        assertEquals(game.lastRound().lastFeedback().getAttempt(), word.getValue());
+        assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
     }
 }
