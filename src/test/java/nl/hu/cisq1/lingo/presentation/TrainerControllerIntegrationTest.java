@@ -46,7 +46,6 @@ class TrainerControllerIntegrationTest {
                 .post("/lingo/game/{gameById}/round", 1L);
 
         mockMvc.perform(request)
-                .andExpect(status().isOk())
                 .andExpect(content().json("{'gameId' : 1, 'feedbackList' :[], attemptsLeft : 5}"))
                 .andExpect(jsonPath("$.*", Matchers.hasSize(6)));
     }
