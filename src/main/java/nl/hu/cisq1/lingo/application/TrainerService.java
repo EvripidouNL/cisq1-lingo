@@ -46,6 +46,8 @@ public class TrainerService {
     }
 
     public GameDTO newRound(Game game) {
+        findById(game.getGameId());
+
         String randomWord = wordService.provideRandomWord(game.getRounds().size() %3 +5);
         Word word = new Word(randomWord);
 
@@ -60,6 +62,8 @@ public class TrainerService {
     }
 
     public GameDTO makeGuess(Game game, String attempt) {
+        findById(game.getGameId());
+
         game.lastRound().guessWord(attempt);
 
         if (game.lastRound().lastFeedback().isWordGuessed()) {
