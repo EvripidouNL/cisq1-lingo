@@ -40,7 +40,7 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("create a new round for a lingo game")
+    @DisplayName("create a new round for a lingo game by id")
     void createRound() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/lingo/game/{gameById}/round", 1L);
