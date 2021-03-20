@@ -41,6 +41,18 @@ class TrainerServiceIntegrationTest {
     }
 
     @Test
+    @DisplayName("create a extra round in a game")
+    void newRound() {
+        GameDTO gameDTO = trainerService.startNewGame();
+
+        Game game = gameRepository.findById(gameDTO.getGameId()).get();
+
+        trainerService.newRound(game);
+
+        assertEquals(2, game.getRounds().size());
+    }
+
+    @Test
     @DisplayName("see if a guess is made")
     void guessWord() {
         GameDTO gameDTO = trainerService.startNewGame();
