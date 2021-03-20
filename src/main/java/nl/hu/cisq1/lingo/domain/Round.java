@@ -57,10 +57,6 @@ public class Round {
             throw new RoundAttemptLimitException();
         }
 
-        if(!attempt.equals(word.getValue())) {
-            throw new FeedbackInvalidException();
-        }
-
         List<Mark> marks = new ArrayList<>();
 
         for (int i=0; i< this.word.getLength(); i++) {
