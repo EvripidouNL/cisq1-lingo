@@ -67,7 +67,7 @@ class RoundTest {
     void attemptNotSameAsMarks() {
         String attempt = "woord";
         List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
-        assertNotEquals(attempt, marks.size());
+        assertNotEquals(attempt.length(), marks.size());
     }
 
 
