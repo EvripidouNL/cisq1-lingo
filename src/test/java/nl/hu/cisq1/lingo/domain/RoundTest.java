@@ -63,6 +63,16 @@ class RoundTest {
     }
 
     @Test
+    @DisplayName("exception: the amount of marks is not the same as the length of the word!")
+    void attemptNotSameAsMarks() {
+        String attempt = "woord";
+        List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
+        assertNotEquals(attempt, marks.size());
+    }
+
+
+
+    @Test
     @DisplayName("last Feedback of round")
     void lastFeedback() {
         String word = "woord";

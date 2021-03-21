@@ -1,6 +1,5 @@
 package nl.hu.cisq1.lingo.domain;
 
-import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,14 +42,6 @@ class FeedbackTest {
         Feedback feedback = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
 
         assertFalse(feedback.guessIsInvalid());
-    }
-
-    @Test
-    @DisplayName("exception: the amount of marks is not the same as the length of the word!")
-    void attemptNotSameAsMarks() {
-        String attempt = "woord";
-        List<Mark> marks = List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID);
-        assertThrows(FeedbackInvalidException.class, () -> new Feedback(attempt, marks));
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )

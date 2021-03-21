@@ -2,7 +2,7 @@ package nl.hu.cisq1.lingo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import nl.hu.cisq1.lingo.domain.exception.FeedbackInvalidException;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +27,6 @@ public class Feedback {
     private List<Mark> marks;
 
     public Feedback(String attempt, List<Mark> marks) {
-        if (attempt.length() != marks.size() && !marks.isEmpty()) {
-            throw new FeedbackInvalidException();
-        }
-
         this.attempt = attempt;
         this.marks = marks;
     }
