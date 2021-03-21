@@ -65,9 +65,10 @@ class RoundTest {
     @Test
     @DisplayName("attempt not same as word length")
     void attemptNotSameAsWordLength() {
-        String attempt = "kort";
-        Word word = new Word("woord");
-        assertNotEquals(attempt.length(), word.getLength());
+        Round round = new Round(new Word("woord"), new ArrayList<>());
+
+        round.guessWord("kort");
+        assertNotEquals(round.lastFeedback().getAttempt().length(), round.getWord().getLength());
     }
 
     @Test
