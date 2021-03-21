@@ -54,7 +54,7 @@ class TrainerServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("word is guessed in one attempt")
+    @DisplayName("the word is guessed in two attempts")
     void guessWord() {
         GameDTO gameDTO = trainerService.startNewGame();
 
@@ -62,6 +62,7 @@ class TrainerServiceIntegrationTest {
 
         game.lastRound().setWord(new Word("woord"));
 
+        trainerService.makeGuess(game, "moord");
         trainerService.makeGuess(game, "woord");
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());

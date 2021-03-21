@@ -59,6 +59,10 @@ public class Round {
         List<Mark> marks = new ArrayList<>();
 
         for (int i=0; i< this.word.getLength(); i++) {
+            if(word.getLength() != attempt.length()) {
+                marks.add(Mark.INVALID);
+                continue;
+            }
 
             if (attempt.charAt(i) == word.getValue().charAt(i)) {
                 marks.add(Mark.CORRECT);
