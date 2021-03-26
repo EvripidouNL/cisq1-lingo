@@ -36,9 +36,11 @@ class TrainerServiceIntegrationTest {
     void newGame() {
         GameDTO gameDTO = trainerService.startNewGame();
 
-        Game game = gameRepository.findById(gameDTO.getGameId()).get();
-
-        assertNotNull(game);
+        assertEquals(0, gameDTO.getScore());
+        assertEquals(5, gameDTO.getAttemptsLeft());
+        assertEquals(0, gameDTO.getFeedbackList().size());
+        assertEquals(1, gameDTO.getRoundNumber());
+        assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
 
     @Test
@@ -48,7 +50,7 @@ class TrainerServiceIntegrationTest {
 
         Game game = gameRepository.findById(gameDTO.getGameId()).get();
 
-        trainerService.newRound(game);
+        trainerService.newRound(game.getGameId());
 
         assertEquals(2, game.getRounds().size());
     }
@@ -62,8 +64,8 @@ class TrainerServiceIntegrationTest {
 
         game.lastRound().setWord(new Word("woord"));
 
-        trainerService.makeGuess(game, "moord");
-        trainerService.makeGuess(game, "woord");
+        trainerService.makeGuess(game.getGameId(), "moord");
+        trainerService.makeGuess(game.getGameId(), "woord");
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
     }

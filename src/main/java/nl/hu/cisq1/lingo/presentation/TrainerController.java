@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.presentation;
 
 import nl.hu.cisq1.lingo.application.TrainerService;
-import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
 import org.springframework.validation.annotation.Validated;
@@ -16,21 +15,21 @@ public class TrainerController {
         this.trainerService = trainerService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/games")
     // For creating a new Lingo gameId
     public GameDTO createGame() {
         return this.trainerService.startNewGame();
     }
 
-    @PostMapping("/game/{gameById}/round")
+    @PostMapping("/game/{id}/round")
     // For creating a new round for lingo game
-    public GameDTO newRound(@PathVariable Game gameById) {
-        return this.trainerService.newRound(gameById);
+    public GameDTO newRound(@PathVariable Long id) {
+        return this.trainerService.newRound(id);
     }
 
-    @PostMapping("/game/{gameById}")
+    @PostMapping("/game/{id}")
     // For making a guess
-    public GameDTO makeGuess(@PathVariable Game gameById, @Validated @RequestBody GuessDTO guessDTO) {
-        return trainerService.makeGuess(gameById, guessDTO.getAttempt());
+    public GameDTO makeGuess(@PathVariable Long id, @Validated @RequestBody GuessDTO guessDTO) {
+        return trainerService.makeGuess(id, guessDTO.getAttempt());
     }
 }

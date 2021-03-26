@@ -24,9 +24,11 @@ class TrainerControllerIntegrationTest {
 
     @Test
     @DisplayName("create a new lingo game")
-    void createGame() throws Exception {
+    void startNewGame() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/create");
+                .post("/lingo/games");
+
+
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -43,7 +45,7 @@ class TrainerControllerIntegrationTest {
     @DisplayName("create a new round for a lingo game by id")
     void createRound() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/game/{gameById}/round", 1);
+                .post("/lingo/game/{id}/round", 1);
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -56,12 +58,13 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.*", Matchers.hasSize(6)));
     }
 
+
     /*
     @Test
     @DisplayName("make a guess on existing lingo game")
     void makeGuess() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/game/{gameById}", 1).contentType(MediaType.APPLICATION_JSON).content("{\"attempt\": \"woord\"}");
+                .post("/lingo/game/{id}", 1).contentType(MediaType.APPLICATION_JSON).content("{\"attempt\": \"woord\"}");
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())

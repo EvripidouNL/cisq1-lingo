@@ -15,7 +15,7 @@ wordt het voor een aanvaller makkelijker om gegevensverlies of serverovername te
 ### Risk
 In deze applicatie worden veel libraries, frameworks en dependencies gebruikt. 
 Het risico is dat bepaalde components niet up to date gehouden worden 
-of dat er onbekende nieuwe/custom kwetsbaarheden zijn. 
+of dat er onbekende nieuwe/custom kwetsbaarheden zijn. Ook kunnen components niet goed geconfigureerd worden.
 De impact is niet altijd even hoog, maar als er een lek in een component zit is de kans op aangevallen worden groter.
 
 ### Risk Authentication and Authorization
@@ -44,6 +44,23 @@ Het voordeel hiervan is dat je gemakkelijk je outdated versies kunt updaten.
     - Download components alleen van vertrouwde bronnen
     - Houd bij welke software dependencies gebruikt worden met welke versie
 
-###
+## A6:2017-Security Misconfiguration
+
 ### Description
 
+### Risk
+
+### Risk Authentication and Authorization
+
+### Counter-measures
+
+
+## A1:2017-Injection
+
+### Description
+
+### Risk
+
+### Risk Authentication and Authorization
+
+### Counter-measures

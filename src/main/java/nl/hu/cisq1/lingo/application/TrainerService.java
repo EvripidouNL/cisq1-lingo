@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -45,8 +46,8 @@ public class TrainerService {
                 game.lastRound().startRound());
     }
 
-    public GameDTO newRound(Game game) {
-        findById(game.getGameId());
+    public GameDTO newRound(Long id) {
+        Game game = findById(id);
 
         String randomWord = wordService.provideRandomWord(game.getRounds().size() %3 +5);
         Word word = new Word(randomWord);
@@ -61,8 +62,8 @@ public class TrainerService {
                 game.lastRound().startRound());
     }
 
-    public GameDTO makeGuess(Game game, String attempt) {
-        findById(game.getGameId());
+    public GameDTO makeGuess(Long id, String attempt) {
+        Game game = findById(id);
 
         game.lastRound().guessWord(attempt);
 
