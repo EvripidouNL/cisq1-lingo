@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
 import lombok.*;
-import nl.hu.cisq1.lingo.domain.exception.RoundDoesNotBelongToGameException;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -31,16 +30,18 @@ public class Game {
         this.rounds = rounds;
     }
 
-    public void calculateScore(Round round, int attempts) {
-        if (!this.rounds.contains(round)) {
-            throw new RoundDoesNotBelongToGameException();
+    public int calculateScore() {
+        if(lastRound().lastFeedback().isWordGuessed()) {
+            this.score += 5 * (5 - lastRound().getFeedbacks().size()) + 5;
         }
 
-        this.score += 5 * (5 - attempts) + 5;
+        return score;
     }
 
     public Round newRound(Word word) {
         Round round = new Round(word, new ArrayList<>());
+
+        round.startRound();
 
         this.rounds.add(round);
 
@@ -49,5 +50,9 @@ public class Game {
 
     public Round lastRound() {
         return this.rounds.get(this.rounds.size() -1);
+    }
+
+    public int attemptsLeft() {
+        return 5 - this.lastRound().getFeedbacks().size();
     }
 }

@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,5 +56,25 @@ class TrainerServiceTest {
                 GameNotFoundException.class,
                 () -> trainerService.findById(0L)
         );
+    }
+
+    @Test
+    @DisplayName("starting a new round")
+    void startNewRound() {
+        WordService wordService = mock(WordService.class);
+
+        when(wordService.provideRandomWord(6))
+                .thenReturn("gechat");
+
+        Game game = new Game(0, new ArrayList<>());
+        String randomword = "logica";
+        Word word = new Word(randomword);
+
+        game.newRound(word);
+
+        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
+
+        when(gameRepository.findById(anyLong()))
+                .thenReturn(Optional.of(game));
     }
 }

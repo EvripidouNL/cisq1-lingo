@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,7 +12,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FeedbackTest {
-
     @Test
     @DisplayName("word is guessed if all letters are correct")
     void wordisGuessed() {

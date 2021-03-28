@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
+import nl.hu.cisq1.lingo.domain.Feedback;
 import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -37,12 +37,12 @@ public class TrainerService {
 
         Game game = new Game(0, new ArrayList<>());
         game.newRound(word);
-        game.lastRound().startRound();
 
         this.gameRepository.save(game);
 
         return gameMapper.toGameDTO(
                 game,
+                0,
                 game.lastRound().startRound());
     }
 
@@ -53,12 +53,12 @@ public class TrainerService {
         Word word = new Word(randomWord);
 
         game.newRound(word);
-        game.lastRound().startRound();
 
         this.gameRepository.save(game);
 
         return gameMapper.toGameDTO(
                 game,
+                game.getScore(),
                 game.lastRound().startRound());
     }
 
@@ -67,13 +67,10 @@ public class TrainerService {
 
         game.lastRound().guessWord(attempt);
 
-        if (game.lastRound().lastFeedback().isWordGuessed()) {
-            game.calculateScore(game.lastRound(), game.lastRound().getFeedbacks().size());
-        }
-
         this.gameRepository.save(game);
         return gameMapper.toGameDTO(
                 game,
+                game.calculateScore(),
                 game.lastRound().lastFeedback().giveHint());
     }
 }

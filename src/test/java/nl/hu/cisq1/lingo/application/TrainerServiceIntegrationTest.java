@@ -9,14 +9,17 @@ import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+
 import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Import(CiTestConfiguration.class)
+@AutoConfigureMockMvc
 @Transactional
 class TrainerServiceIntegrationTest {
     @Autowired
@@ -38,7 +41,6 @@ class TrainerServiceIntegrationTest {
 
         assertEquals(0, gameDTO.getScore());
         assertEquals(5, gameDTO.getAttemptsLeft());
-        assertEquals(0, gameDTO.getFeedbackList().size());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
