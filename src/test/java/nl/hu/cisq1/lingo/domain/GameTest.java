@@ -42,7 +42,8 @@ class GameTest {
                 Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 15),
                 Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 10),
                 Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 5),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 0)
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 0),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("noord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.GAME_ENDED, 0)
         );
     }
 
