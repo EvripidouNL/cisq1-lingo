@@ -54,6 +54,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
+                .andExpect(jsonPath("$.status", is("PLAYING")))
                 .andExpect(jsonPath("$.feedbacks", hasSize(0)))
                 .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
@@ -61,27 +62,31 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("create a new round for a lingo game by id")
+    @DisplayName("create a extra round in a game")
     void createRound() throws Exception {
         Game game = new Game(0, new ArrayList<>());
         Word word = new Word("woord");
         game.newRound(word);
 
+        game.lastRound().guessWord("woord");
+        game.calculateScoreAndGiveStatus();
+
         when(gameRepository.findById(0L))
                 .thenReturn(Optional.of(game));
         when(wordRepository.findRandomWordByLength(6))
-                .thenReturn(Optional.of(new Word("aanleg")));
+                .thenReturn(Optional.of(new Word("oranje")));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/lingo/game/0/round");
 
-        String[] expectedHint = { "a", ".", ".", ".", ".", "." };
+        String[] expectedHint = { "o", ".", ".", ".", ".", "." };
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.score", is(0)))
+                .andExpect(jsonPath("$.score", is(25)))
                 .andExpect(jsonPath("$.roundNumber", is(2)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
+                .andExpect(jsonPath("$.status", is("PLAYING")))
                 .andExpect(jsonPath("$.feedbacks", hasSize(0)))
                 .andExpect(jsonPath("$.hint.characterList", hasSize(6)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
@@ -116,6 +121,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(4)))
+                .andExpect(jsonPath("$.status", is("PLAYING")))
                 .andExpect(jsonPath("$.feedbacks", hasSize(1)))
                 .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));

@@ -10,5 +10,6 @@ public interface GameMapper {
     @Mapping(target = "attemptsLeft", expression = "java(game.attemptsLeft())")
     @Mapping(target = "roundNumber", expression = "java(game.getRounds().size())")
     @Mapping(target = "feedbacks", expression = "java(game.lastRound().getFeedbacks())")
+    @Mapping(target = "status", expression = "java(game.getStatus())")
     GameDTO toGameDTO(Game game, int score, Hint hint);
 }

@@ -66,7 +66,7 @@ public class TrainerService {
         this.gameRepository.save(game);
         return gameMapper.toGameDTO(
                 game,
-                game.calculateScore(),
+                game.calculateScoreAndGiveStatus(),
                 game.lastRound().lastFeedback().giveHint());
     }
 }

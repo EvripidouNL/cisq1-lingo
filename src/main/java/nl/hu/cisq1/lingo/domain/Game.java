@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import lombok.*;
+import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
 import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,24 +25,36 @@ public class Game {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Round> rounds;
 
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public Game(int score, List<Round> rounds) {
         this.score = score;
         this.rounds = rounds;
+        this.status = Status.WAITING_FOR_ROUND;
     }
 
-    public int calculateScore() {
-        if(lastRound().lastFeedback().isWordGuessed()) {
+    public int calculateScoreAndGiveStatus() {
+        if (lastRound().lastFeedback().isWordGuessed()) {
+            this.status = Status.WAITING_FOR_ROUND;
             this.score += 5 * (5 - lastRound().getFeedbacks().size()) + 5;
+        } else if (lastRound().getFeedbacks().size() >= 5) {
+            this.status = Status.GAME_ENDED;
         }
 
         return score;
     }
 
     public Round newRound(Word word) {
-        Round round = new Round(word, new ArrayList<>());
+        if (!status.equals(Status.WAITING_FOR_ROUND)) {
+            throw new CannotStartNewRoundException(this.status);
+        }
 
+        Round round = new Round(word, new ArrayList<>());
         round.startRound();
 
+        this.status = Status.PLAYING;
         this.rounds.add(round);
 
         return round;

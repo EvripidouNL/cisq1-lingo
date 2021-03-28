@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
@@ -79,12 +80,13 @@ class TrainerServiceTest {
         assertEquals(0, gameDTO.getScore());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
+        assertEquals("PLAYING", gameDTO.getStatus().toString());
         assertEquals(0, gameDTO.getFeedbacks().size());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
     }
 
     @Test
-    @DisplayName("starting a new round")
+    @DisplayName("create a extra round in a game")
     void startNewRound() {
         WordService wordService = mock(WordService.class);
         SpringGameRepository gameRepository = mock(SpringGameRepository.class);
@@ -95,8 +97,12 @@ class TrainerServiceTest {
         Word word = new Word(randomword);
         game.newRound(word);
 
+
         when(gameRepository.findById(anyLong()))
                 .thenReturn(Optional.of(game));
+
+        trainerService.makeGuess(0L, "woord");
+
         when(wordService.provideRandomWord(game.totalRounds()))
                 .thenReturn("gechat");
 
@@ -104,9 +110,10 @@ class TrainerServiceTest {
 
         List<Character> expectedHint = List.of('g', '.', '.', '.', '.', '.');
 
-        assertEquals(0, gameDTO.getScore());
+        assertEquals(25, gameDTO.getScore());
         assertEquals(2, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
+        assertEquals("PLAYING", gameDTO.getStatus().toString());
         assertEquals(0, gameDTO.getFeedbacks().size());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
         assertEquals(6, game.lastRound().getWord().getLength());
@@ -135,6 +142,7 @@ class TrainerServiceTest {
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(4, gameDTO.getAttemptsLeft());
         assertEquals(1, gameDTO.getFeedbacks().size());
+        assertEquals("PLAYING", gameDTO.getStatus().toString());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
         assertEquals(5, game.lastRound().getWord().getLength());
     }

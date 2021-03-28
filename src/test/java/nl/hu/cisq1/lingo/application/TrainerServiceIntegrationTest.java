@@ -14,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import javax.transaction.Transactional;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @Import(CiTestConfiguration.class)
@@ -40,6 +42,7 @@ class TrainerServiceIntegrationTest {
 
         assertEquals(0, gameDTO.getScore());
         assertEquals(5, gameDTO.getAttemptsLeft());
+        assertEquals("PLAYING", gameDTO.getStatus().toString());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
@@ -47,34 +50,39 @@ class TrainerServiceIntegrationTest {
     @Test
     @DisplayName("create a extra round in a game")
     void newRound() {
-        GameDTO gameDTO = trainerService.startNewGame();
+        GameDTO gameDTONewGame = trainerService.startNewGame();
 
-        Game game = gameRepository.findById(gameDTO.getGameId()).get();
+        Game game = gameRepository.findById(gameDTONewGame.getGameId()).get();
 
-        trainerService.newRound(game.getGameId());
+        game.lastRound().setWord(new Word("woord"));
+        trainerService.makeGuess(game.getGameId(), "woord");
 
-        assertEquals(0, gameDTO.getScore());
-        assertEquals(5, gameDTO.getAttemptsLeft());
-        assertEquals(2, game.getRounds().size());
-        assertEquals(5, gameDTO.getHint().getCharacterList().size());
+        GameDTO gameDTONewRound = trainerService.newRound(game.getGameId());
+
+        assertEquals(25, gameDTONewRound.getScore());
+        assertEquals(5, gameDTONewRound.getAttemptsLeft());
+        assertEquals("PLAYING", gameDTONewRound.getStatus().toString());
+        assertEquals(2, gameDTONewRound.getRoundNumber());
+        assertEquals(6, gameDTONewRound.getHint().getCharacterList().size());
     }
 
     @Test
     @DisplayName("the word is guessed in two attempts")
     void guessWord() {
-        GameDTO gameDTO = trainerService.startNewGame();
+        GameDTO gameDTONewGame = trainerService.startNewGame();
 
-        Game game = gameRepository.findById(gameDTO.getGameId()).get();
+        Game game = gameRepository.findById(gameDTONewGame.getGameId()).get();
 
         game.lastRound().setWord(new Word("woord"));
 
         trainerService.makeGuess(game.getGameId(), "moord");
-        trainerService.makeGuess(game.getGameId(), "woord");
+        GameDTO gameDTOLastGuess = trainerService.makeGuess(game.getGameId(), "woord");
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
-        assertEquals(20, game.getScore());
-        assertEquals(3, game.attemptsLeft());
-        assertEquals(1, game.getRounds().size());
-        assertEquals(5, gameDTO.getHint().getCharacterList().size());
+        assertEquals(20, gameDTOLastGuess.getScore());
+        assertEquals(3, gameDTOLastGuess.getAttemptsLeft());
+        assertEquals("WAITING_FOR_ROUND", gameDTOLastGuess.getStatus().toString());
+        assertEquals(1, gameDTOLastGuess.getRoundNumber());
+        assertEquals(5, gameDTOLastGuess.getHint().getCharacterList().size());
     }
 }
