@@ -34,7 +34,7 @@ class TrainerServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("create a new game by trainer service")
+    @DisplayName("create a new game")
     void newGame() {
         GameDTO gameDTO = trainerService.startNewGame();
 

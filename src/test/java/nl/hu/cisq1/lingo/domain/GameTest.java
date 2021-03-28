@@ -2,28 +2,46 @@ package nl.hu.cisq1.lingo.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-    @Test
+    @ParameterizedTest
+    @MethodSource("provideGuessExamples")
     @DisplayName("score based on attempts in round")
-    void calculateScore() {
+    void calculateScore(String word, List<Feedback> feedbacks, int score) {
+        Word actualWord = new Word(word);
         Game game = new Game(0, new ArrayList<>());
-        Word word = new Word("woord");
 
-        game.newRound(word);
-        game.lastRound().guessWord("moord");
-        game.lastRound().guessWord("woord");
+        game.newRound(actualWord);
+
+        Round round = game.lastRound();
+
+        round.setFeedbacks(feedbacks);
 
         game.calculateScore();
 
-        assertEquals(20, game.getScore());
+        assertEquals(score, game.getScore());
     }
 
+    private static Stream<Arguments> provideGuessExamples() {
+        return Stream.of(
+                Arguments.of("woord", List.of(new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 25),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 20),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 15),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 10),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 5),
+                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), 0)
+        );
+    }
 
     @Test
     @DisplayName("add one new round to game")
@@ -36,7 +54,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("last Feedback of round")
+    @DisplayName("last feedback of round")
     void lastRound() {
         Game game = new Game(0, new ArrayList<>());
         String roundWord = "woord";

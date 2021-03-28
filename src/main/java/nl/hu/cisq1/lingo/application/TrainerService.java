@@ -6,7 +6,7 @@ import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import nl.hu.cisq1.lingo.presentation.dto.GameMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -14,15 +14,12 @@ import java.util.ArrayList;
 @Service
 @Transactional
 public class TrainerService {
+    private final WordService wordService;
     private final SpringGameRepository gameRepository;
+    private final GameMapper gameMapper = Mappers.getMapper(GameMapper.class);
 
-    @Autowired
-    private GameMapper gameMapper;
-
-    @Autowired
-    private WordService wordService;
-
-    public TrainerService(SpringGameRepository gameRepository) {
+    public TrainerService(WordService wordService, SpringGameRepository gameRepository) {
+        this.wordService = wordService;
         this.gameRepository = gameRepository;
     }
 
@@ -48,7 +45,7 @@ public class TrainerService {
     public GameDTO newRound(Long id) {
         Game game = findById(id);
 
-        String randomWord = wordService.provideRandomWord(game.getRounds().size() %3 +5);
+        String randomWord = wordService.provideRandomWord(game.totalRounds());
         Word word = new Word(randomWord);
 
         game.newRound(word);

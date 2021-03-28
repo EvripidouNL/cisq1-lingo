@@ -54,4 +54,8 @@ public class Game {
     public int attemptsLeft() {
         return 5 - this.lastRound().getFeedbacks().size();
     }
+
+    public int totalRounds() {
+        return this.getRounds().size() %3 +5;
+    }
 }
