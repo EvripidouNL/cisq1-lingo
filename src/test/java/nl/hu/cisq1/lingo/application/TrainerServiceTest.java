@@ -76,5 +76,7 @@ class TrainerServiceTest {
 
         when(gameRepository.findById(anyLong()))
                 .thenReturn(Optional.of(game));
+
+        assertEquals(1, game.getRounds().size());
     }
 }
