@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.presentation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.data.SpringWordRepository;
@@ -16,12 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -51,13 +47,16 @@ class TrainerControllerIntegrationTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/lingo/games");
 
+        String[] expectedHint = { "w", ".", ".", ".", "." };
+
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
                 .andExpect(jsonPath("$.feedbacks", hasSize(0)))
-                .andExpect(jsonPath("$.hint").exists());
+                .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
+                .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
 
     }
 
@@ -76,13 +75,16 @@ class TrainerControllerIntegrationTest {
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/lingo/game/0/round");
 
+        String[] expectedHint = { "a", ".", ".", ".", ".", "." };
+
         mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(2)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
                 .andExpect(jsonPath("$.feedbacks", hasSize(0)))
-                .andExpect(jsonPath("$.hint").exists());
+                .andExpect(jsonPath("$.hint.characterList", hasSize(6)))
+                .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
     }
 
     @Test
@@ -102,6 +104,8 @@ class TrainerControllerIntegrationTest {
         guessDTO.setAttempt("moord");
         String guessBody = new ObjectMapper().writeValueAsString(guessDTO);
 
+        String[] expectedHint = { ".", "o", "o", "r", "d" };
+
         RequestBuilder guessRequest = MockMvcRequestBuilders
                 .post("/lingo/game/" + 0L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -113,6 +117,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(4)))
                 .andExpect(jsonPath("$.feedbacks", hasSize(1)))
-                .andExpect(jsonPath("$.hint").exists());
+                .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
+                .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
     }
 }
