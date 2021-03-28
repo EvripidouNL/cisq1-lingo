@@ -4,36 +4,26 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
-/*
-    @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
+    @Test
     @DisplayName("score based on attempts in round")
-    @MethodSource("provideAttemptExamples")
-    void calculateScore(String word, List<Feedback> feedbacks, int score) {
+    void calculateScore() {
         Game game = new Game(0, new ArrayList<>());
+        Word word = new Word("woord");
 
-        game.newRound(new Word(word));
-
+        game.newRound(word);
+        game.lastRound().guessWord("moord");
+        game.lastRound().guessWord("woord");
 
         game.calculateScore();
 
-        assertEquals(score, game.getScore());
+        assertEquals(20, game.getScore());
     }
 
-    private static Stream<Arguments> provideAttemptExamples() {
-        return Stream.of(
-                Arguments.of("woord",  25),
-                Arguments.of("woord", 2, 20),
-                Arguments.of("woord", 3, 15),
-                Arguments.of("woord", 4, 10),
-                Arguments.of("woord", 5, 5)
-        );
-    }
-
- */
 
     @Test
     @DisplayName("add one new round to game")
