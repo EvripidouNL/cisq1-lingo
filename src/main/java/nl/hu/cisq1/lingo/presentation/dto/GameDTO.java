@@ -3,7 +3,6 @@ package nl.hu.cisq1.lingo.presentation.dto;
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.Feedback;
 import nl.hu.cisq1.lingo.domain.Hint;
-
 import java.util.List;
 
 @AllArgsConstructor

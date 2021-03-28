@@ -2,7 +2,6 @@ package nl.hu.cisq1.lingo.domain;
 
 import lombok.*;
 import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

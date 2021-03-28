@@ -2,7 +2,6 @@ package nl.hu.cisq1.lingo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
