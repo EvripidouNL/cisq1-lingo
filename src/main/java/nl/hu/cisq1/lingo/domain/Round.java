@@ -3,7 +3,6 @@ package nl.hu.cisq1.lingo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
-import nl.hu.cisq1.lingo.domain.exception.WordAlreadyGuessedException;
 import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 import java.util.ArrayList;

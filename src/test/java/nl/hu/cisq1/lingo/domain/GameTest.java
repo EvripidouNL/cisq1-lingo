@@ -67,8 +67,10 @@ class GameTest {
 
         game.lastRound().guessWord("soort");
 
+        Word newRoundWord = new Word("oranje");
+
         assertThrows(CannotStartNewRoundException.class, () -> {
-            game.newRound(new Word("woord"));
+            game.newRound(newRoundWord);
         });
     }
 
