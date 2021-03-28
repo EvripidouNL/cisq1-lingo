@@ -45,6 +45,8 @@ class TrainerServiceIntegrationTest {
         assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
 
+    /*
+
     @Test
     @DisplayName("create a extra round in a game")
     void newRound() {
@@ -63,6 +65,8 @@ class TrainerServiceIntegrationTest {
         assertEquals(2, gameDTONewRound.getRoundNumber());
         assertEquals(6, gameDTONewRound.getHint().getCharacterList().size());
     }
+
+     */
 
     @Test
     @DisplayName("the word is guessed in two attempts")
