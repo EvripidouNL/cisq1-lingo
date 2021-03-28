@@ -53,7 +53,10 @@ class TrainerServiceIntegrationTest {
 
         trainerService.newRound(game.getGameId());
 
+        assertEquals(0, gameDTO.getScore());
+        assertEquals(5, gameDTO.getAttemptsLeft());
         assertEquals(2, game.getRounds().size());
+        assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
 
     @Test
@@ -69,5 +72,9 @@ class TrainerServiceIntegrationTest {
         trainerService.makeGuess(game.getGameId(), "woord");
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
+        assertEquals(20, game.getScore());
+        assertEquals(3, game.attemptsLeft());
+        assertEquals(1, game.getRounds().size());
+        assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
 }

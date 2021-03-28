@@ -1,10 +1,13 @@
 package nl.hu.cisq1.lingo.presentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.domain.Word;
+import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +15,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -79,23 +85,34 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.hint").exists());
     }
 
-    /*
     @Test
-    @DisplayName("make a guess on existing lingo game")
+    @DisplayName("make a guess on a lingo game")
     void makeGuess() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/game/{id}", 1).contentType(MediaType.APPLICATION_JSON).content("{\"attempt\": \"woord\"}");
+        Game game = new Game(0, new ArrayList<>());
+        Word word = new Word("woord");
+        when(wordRepository.findRandomWordByLength(5))
+                .thenReturn(Optional.of(word));
 
-        mockMvc.perform(request)
+        game.newRound(word);
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+
+        GuessDTO guessDTO = new GuessDTO();
+        guessDTO.setAttempt("moord");
+        String guessBody = new ObjectMapper().writeValueAsString(guessDTO);
+
+        RequestBuilder guessRequest = MockMvcRequestBuilders
+                .post("/lingo/game/" + 0L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(guessBody);
+
+        mockMvc.perform(guessRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.gameId").exists())
-                .andExpect(jsonPath("$.score").exists())
-                .andExpect(jsonPath("$.roundNumber").exists())
-                .andExpect(jsonPath("$.attemptsLeft").exists())
-                .andExpect(jsonPath("$.feedbackList").exists())
-                .andExpect(jsonPath("$.hint").exists())
-                .andExpect(jsonPath("$.*", Matchers.hasSize(6)));
+                .andExpect(jsonPath("$.score", is(0)))
+                .andExpect(jsonPath("$.roundNumber", is(1)))
+                .andExpect(jsonPath("$.attemptsLeft", is(4)))
+                .andExpect(jsonPath("$.feedbacks", hasSize(1)))
+                .andExpect(jsonPath("$.hint").exists());
     }
-
-     */
 }
