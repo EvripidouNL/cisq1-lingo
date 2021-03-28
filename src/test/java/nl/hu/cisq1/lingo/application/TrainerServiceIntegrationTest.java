@@ -14,9 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import javax.transaction.Transactional;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @Import(CiTestConfiguration.class)
