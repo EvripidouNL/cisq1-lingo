@@ -27,6 +27,7 @@ public class Game {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Status status;
 
     public Game(int score, List<Round> rounds) {

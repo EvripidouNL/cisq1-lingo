@@ -45,17 +45,16 @@ class TrainerServiceIntegrationTest {
         assertEquals(5, gameDTO.getHint().getCharacterList().size());
     }
 
-    /*
-
     @Test
     @DisplayName("create a extra round in a game")
     void newRound() {
         GameDTO gameDTONewGame = trainerService.startNewGame();
 
-        Game game = gameRepository.findById(gameDTONewGame.getGameId()).get();
+        Game game = gameRepository.findById(gameDTONewGame.getGameId()).orElseThrow();
 
-        game.lastRound().setWord(new Word("woord"));
-        trainerService.makeGuess(game.getGameId(), "woord");
+        Word word = game.lastRound().getWord();
+
+        trainerService.makeGuess(game.getGameId(), word.getValue());
 
         GameDTO gameDTONewRound = trainerService.newRound(game.getGameId());
 
@@ -66,8 +65,6 @@ class TrainerServiceIntegrationTest {
         assertEquals(6, gameDTONewRound.getHint().getCharacterList().size());
     }
 
-     */
-
     @Test
     @DisplayName("the word is guessed in two attempts")
     void guessWord() {
@@ -75,10 +72,10 @@ class TrainerServiceIntegrationTest {
 
         Game game = gameRepository.findById(gameDTONewGame.getGameId()).get();
 
-        game.lastRound().setWord(new Word("woord"));
+        Word word = game.lastRound().getWord();
 
         trainerService.makeGuess(game.getGameId(), "moord");
-        GameDTO gameDTOLastGuess = trainerService.makeGuess(game.getGameId(), "woord");
+        GameDTO gameDTOLastGuess = trainerService.makeGuess(game.getGameId(), word.getValue());
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
         assertEquals(20, gameDTOLastGuess.getScore());
