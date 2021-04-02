@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import nl.hu.cisq1.lingo.domain.exception.WordLengthNotSupportedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,12 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class WordTest {
+    private int length;
+
+    @BeforeEach
+    public void init() {
+        Word word = new Word("woord");
+        length = word.getLength();
+    }
 
     @Test
     @DisplayName("length is based on given word")
     void lengthBasedOnWord() {
-        Word word = new Word("woord");
-        int length = word.getLength();
         assertEquals(5, length);
     }
 

@@ -3,6 +3,7 @@ package nl.hu.cisq1.lingo.application;
 import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.WordLengthNotSupportedException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,17 +25,23 @@ import static org.mockito.Mockito.*;
  * - the WordService calls a test double instead of an actual repository
  */
 class WordServiceTest {
+    private SpringWordRepository wordMockRepository;
+    private WordService wordService;
+
+    @BeforeEach
+    public void init() {
+        wordMockRepository = mock(SpringWordRepository.class);
+        wordService = new WordService(wordMockRepository);
+    }
 
     @ParameterizedTest
     @DisplayName("requests a random word of a specified length from the repository")
     @MethodSource("randomWordExamples")
     void providesRandomWord(int wordLength, String word) {
-        SpringWordRepository mockRepository = mock(SpringWordRepository.class);
-        when(mockRepository.findRandomWordByLength(wordLength))
+        when(wordMockRepository.findRandomWordByLength(wordLength))
                 .thenReturn(Optional.of(new Word(word)));
 
-        WordService service = new WordService(mockRepository);
-        String result = service.provideRandomWord(wordLength);
+        String result = wordService.provideRandomWord(wordLength);
 
         assertEquals(word, result);
     }
@@ -42,15 +49,12 @@ class WordServiceTest {
     @Test
     @DisplayName("throws exception if length not supported")
     void unsupportedLength() {
-        SpringWordRepository mockRepository = mock(SpringWordRepository.class);
-        when(mockRepository.findRandomWordByLength(anyInt()))
+        when(wordMockRepository.findRandomWordByLength(anyInt()))
                 .thenReturn(Optional.empty());
-
-        WordService service = new WordService(mockRepository);
 
         assertThrows(
                 WordLengthNotSupportedException.class,
-                () -> service.provideRandomWord(5)
+                () -> wordService.provideRandomWord(5)
         );
     }
 

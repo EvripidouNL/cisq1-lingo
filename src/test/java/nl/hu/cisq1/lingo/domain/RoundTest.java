@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,14 +14,21 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RoundTest {
+    private Round round;
+    private Feedback feedbackMoord;
+
+    @BeforeEach
+    public void init() {
+        Word word = new Word("woord");
+
+        round = new Round(word,  new ArrayList<>());
+
+        feedbackMoord = round.guessWord("moord");
+    }
 
     @Test
     @DisplayName("start round and first letter of word is shown")
     void showFirstLetterOfWord() {
-        Word word = new Word("woord");
-
-        Round round = new Round(word,  new ArrayList<>());
-
         assertEquals(new Hint(List.of('w', '.', '.', '.', '.')), round.startRound());
     }
 
@@ -47,15 +55,11 @@ class RoundTest {
     @Test
     @DisplayName("exception: the attempt limit is reached! You may not make another guess!")
     void attemptLimitReached() {
-        String word = "woord";
-        Round round = new Round(new Word(word), new ArrayList<>());
-
         round.guessWord("moord");
         round.guessWord("noord");
         round.guessWord("koord");
         round.guessWord("hoort");
         round.guessWord("spoor");
-
 
         assertThrows(RoundAttemptLimitException.class, () -> {
             round.guessWord("soort");
@@ -65,8 +69,6 @@ class RoundTest {
     @Test
     @DisplayName("attempt not same as word length")
     void attemptNotSameAsWordLength() {
-        Round round = new Round(new Word("woord"), new ArrayList<>());
-
         round.guessWord("kort");
         assertNotEquals(round.lastFeedback().getAttempt().length(), round.getWord().getLength());
     }
@@ -74,11 +76,6 @@ class RoundTest {
     @Test
     @DisplayName("last Feedback of round")
     void lastFeedback() {
-        String word = "woord";
-        Round round = new Round(new Word(word), new ArrayList<>());
-
-        Feedback feedback = round.guessWord("moord");
-
-        assertEquals(feedback, round.lastFeedback());
+        assertEquals(feedbackMoord, round.lastFeedback());
     }
 }

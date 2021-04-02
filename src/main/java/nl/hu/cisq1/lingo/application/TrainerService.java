@@ -45,7 +45,7 @@ public class TrainerService {
     public GameDTO newRound(Long id) {
         Game game = findById(id);
 
-        String randomWord = wordService.provideRandomWord(game.totalRounds());
+        String randomWord = wordService.provideRandomWord(game.wordLengthBasedOnRounds());
         Word word = new Word(randomWord);
 
         game.newRound(word);

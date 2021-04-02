@@ -1,5 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,36 +12,41 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FeedbackTest {
+    private Feedback feedbackGuessed;
+    private Feedback feedbackNotGuessed;
+    private Feedback feedbackInvalid;
+    private Feedback feedbackNotInvalid;
+
+    @BeforeEach
+    public void init() {
+        feedbackGuessed = new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
+        feedbackNotGuessed = new Feedback("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT));
+        feedbackInvalid = new Feedback("hetzelfde", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
+        feedbackNotInvalid = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
+    }
+
     @Test
     @DisplayName("word is guessed if all letters are correct")
     void wordisGuessed() {
-        Feedback feedback = new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
-
-        assertTrue(feedback.isWordGuessed());
+        assertTrue(feedbackGuessed.isWordGuessed());
     }
 
     @Test
     @DisplayName("word is not guessed if one or more letters are incorrect")
     void wordisNotGuessed() {
-        Feedback feedback = new Feedback("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT));
-
-        assertFalse(feedback.isWordGuessed());
+        assertFalse(feedbackNotGuessed.isWordGuessed());
     }
 
     @Test
     @DisplayName("guess is invalid")
     void guessIsInvalid() {
-        Feedback feedback = new Feedback("hetzelfde", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
-
-        assertTrue(feedback.guessIsInvalid());
+        assertTrue(feedbackInvalid.guessIsInvalid());
     }
 
     @Test
     @DisplayName("guess is not invalid")
     void guessIsNotInvalid() {
-        Feedback feedback = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
-
-        assertFalse(feedback.guessIsInvalid());
+        assertFalse(feedbackNotInvalid.guessIsInvalid());
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )

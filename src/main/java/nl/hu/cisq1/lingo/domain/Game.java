@@ -69,7 +69,7 @@ public class Game {
         return 5 - this.lastRound().getFeedbacks().size();
     }
 
-    public int totalRounds() {
+    public int wordLengthBasedOnRounds() {
         return this.getRounds().size() %3 +5;
     }
 }

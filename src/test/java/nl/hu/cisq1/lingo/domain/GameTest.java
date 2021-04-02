@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,6 +15,15 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+    private Game game;
+    private Round newRound;
+
+    @BeforeEach
+    public void init() {
+        game = new Game(0, new ArrayList<>());
+        Word word = new Word("woord");
+        newRound = game.newRound(word);
+    }
 
     @ParameterizedTest
     @MethodSource("provideGuessExamples")
@@ -50,22 +60,13 @@ class GameTest {
     @Test
     @DisplayName("add one new round to game when the word is guessed")
     void newRound() {
-        Game game = new Game(0, new ArrayList<>());
-
-        game.newRound(new Word("woord"));
-
         game.lastRound().guessWord("woord");
-
         assertEquals(1, game.getRounds().size());
     }
 
     @Test
     @DisplayName("cannot add new round to game when the word is not guessed")
     void cannotStartNewRound() {
-        Game game = new Game(0, new ArrayList<>());
-
-        game.newRound(new Word("woord"));
-
         game.lastRound().guessWord("soort");
 
         Word newRoundWord = new Word("oranje");
@@ -76,16 +77,8 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("last feedback of round")
+    @DisplayName("check if the newround the last round is")
     void lastRound() {
-        Game game = new Game(0, new ArrayList<>());
-        String roundWord = "woord";
-        Word word = new Word(roundWord);
-
-        Round round = game.newRound(word);
-
-        round.guessWord("moord");
-
-        assertEquals(round, game.lastRound());
+        assertEquals(newRound, game.lastRound());
     }
 }

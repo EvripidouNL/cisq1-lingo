@@ -7,6 +7,7 @@ import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +39,35 @@ class TrainerControllerIntegrationTest {
     @MockBean
     private SpringWordRepository wordRepository;
 
+    private Game game;
+    private Word word;
+    private GuessDTO guessDTO;
+
+    @BeforeEach
+    public void init() {
+        game = new Game(0, new ArrayList<>());
+        word = new Word("woord");
+        game.newRound(word);
+
+        guessDTO = new GuessDTO();
+
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+        when(wordRepository.findRandomWordByLength(5))
+                .thenReturn(Optional.of(word));
+        when(wordRepository.findRandomWordByLength(6))
+                .thenReturn(Optional.of(new Word("oranje")));
+    }
+
     @Test
     @DisplayName("create a new lingo game")
     void startNewGame() throws Exception {
-        when(wordRepository.findRandomWordByLength(5))
-                .thenReturn(Optional.of(new Word("woord")));
-
-        RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/games");
-
         String[] expectedHint = { "w", ".", ".", ".", "." };
 
-        mockMvc.perform(request)
+        RequestBuilder newGameRequest = MockMvcRequestBuilders
+                .post("/lingo/games");
+
+        mockMvc.perform(newGameRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
@@ -64,24 +82,15 @@ class TrainerControllerIntegrationTest {
     @Test
     @DisplayName("create a extra round in a game")
     void createRound() throws Exception {
-        Game game = new Game(0, new ArrayList<>());
-        Word word = new Word("woord");
-        game.newRound(word);
-
         game.lastRound().guessWord("woord");
         game.calculateScoreAndGiveStatus();
 
-        when(gameRepository.findById(0L))
-                .thenReturn(Optional.of(game));
-        when(wordRepository.findRandomWordByLength(6))
-                .thenReturn(Optional.of(new Word("oranje")));
-
-        RequestBuilder request = MockMvcRequestBuilders
-                .post("/lingo/game/0/round");
-
         String[] expectedHint = { "o", ".", ".", ".", ".", "." };
 
-        mockMvc.perform(request)
+        RequestBuilder newRoundRequest = MockMvcRequestBuilders
+                .post("/lingo/game/0/round");
+
+        mockMvc.perform(newRoundRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.score", is(25)))
                 .andExpect(jsonPath("$.roundNumber", is(2)))
@@ -95,17 +104,6 @@ class TrainerControllerIntegrationTest {
     @Test
     @DisplayName("make a guess on a lingo game")
     void makeGuess() throws Exception {
-        Game game = new Game(0, new ArrayList<>());
-        Word word = new Word("woord");
-        when(wordRepository.findRandomWordByLength(5))
-                .thenReturn(Optional.of(word));
-
-        game.newRound(word);
-
-        when(gameRepository.findById(0L))
-                .thenReturn(Optional.of(game));
-
-        GuessDTO guessDTO = new GuessDTO();
         guessDTO.setAttempt("moord");
         String guessBody = new ObjectMapper().writeValueAsString(guessDTO);
 

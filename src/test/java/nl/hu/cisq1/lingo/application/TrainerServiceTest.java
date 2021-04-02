@@ -2,10 +2,10 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
-import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,17 +22,42 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class TrainerServiceTest {
+    private Game game;
+    private Word word;
+
+    private SpringGameRepository gameRepository;
+    private WordService wordService;
+    private TrainerService trainerService;
+
+    private GameDTO gameDTO;
+
+    @BeforeEach
+    public void init() {
+        game = new Game(0, new ArrayList<>());
+        word = new Word("woord");
+        game.newRound(word);
+
+        gameRepository = mock(SpringGameRepository.class);
+        wordService = mock(WordService.class);
+        trainerService = new TrainerService(wordService, gameRepository);
+
+        when(wordService.provideRandomWord(5))
+                .thenReturn("woord");
+        when(gameRepository.findById(anyLong()))
+                .thenReturn(Optional.of(game));
+        when(wordService.provideRandomWord(game.wordLengthBasedOnRounds()))
+                .thenReturn("gechat");
+        when(gameRepository.findById(0L))
+                .thenReturn(Optional.of(game));
+    }
+
+
     @ParameterizedTest
     @DisplayName("requests a game by id from the repository")
     @MethodSource("gameByIdExamples")
     void findGameById(Long id, Game game) {
-        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
-        WordService wordService = mock(WordService.class);
-
         when(gameRepository.findById(id))
                 .thenReturn(Optional.of(new Game(0, new ArrayList<>())));
-
-        TrainerService trainerService = new TrainerService(wordService, gameRepository);
 
         String result = trainerService.findById(id).toString();
 
@@ -50,12 +75,7 @@ class TrainerServiceTest {
     @Test
     @DisplayName("throws exception if game is not found")
     void canNotFindGame() {
-        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
-        WordService wordService = mock(WordService.class);
-
         when(gameRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        TrainerService trainerService = new TrainerService(wordService, gameRepository);
 
         assertThrows(
                 GameNotFoundException.class,
@@ -66,14 +86,7 @@ class TrainerServiceTest {
     @Test
     @DisplayName("starting a new game")
     void newGame() {
-        WordService wordService = mock(WordService.class);
-        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
-        TrainerService trainerService = new TrainerService(wordService, gameRepository);
-
-        when(wordService.provideRandomWord(5))
-                .thenReturn("woord");
-
-        GameDTO gameDTO = trainerService.startNewGame();
+        gameDTO = trainerService.startNewGame();
 
         List<Character> expectedHint = List.of('w', '.', '.', '.', '.');
 
@@ -88,25 +101,9 @@ class TrainerServiceTest {
     @Test
     @DisplayName("create a extra round in a game")
     void startNewRound() {
-        WordService wordService = mock(WordService.class);
-        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
-        TrainerService trainerService = new TrainerService(wordService, gameRepository);
-
-        Game game = new Game(0, new ArrayList<>());
-        String randomword = "woord";
-        Word word = new Word(randomword);
-        game.newRound(word);
-
-
-        when(gameRepository.findById(anyLong()))
-                .thenReturn(Optional.of(game));
-
         trainerService.makeGuess(0L, "woord");
 
-        when(wordService.provideRandomWord(game.totalRounds()))
-                .thenReturn("gechat");
-
-        GameDTO gameDTO = trainerService.newRound(0L);
+        gameDTO = trainerService.newRound(0L);
 
         List<Character> expectedHint = List.of('g', '.', '.', '.', '.', '.');
 
@@ -122,19 +119,7 @@ class TrainerServiceTest {
     @Test
     @DisplayName("make a guess on a lingo game")
     void makeGuess() {
-        WordService wordService = mock(WordService.class);
-        SpringGameRepository gameRepository = mock(SpringGameRepository.class);
-        TrainerService trainerService = new TrainerService(wordService, gameRepository);
-
-        Game game = new Game(0, new ArrayList<>());
-        String randomword = "woord";
-        Word word = new Word(randomword);
-        game.newRound(word);
-
-        when(gameRepository.findById(0L))
-                .thenReturn(Optional.of(game));
-
-        GameDTO gameDTO = trainerService.makeGuess(0L, "moord");
+        gameDTO = trainerService.makeGuess(0L, "moord");
 
         List<Character> expectedHint = List.of('.', 'o', 'o', 'r', 'd');
 

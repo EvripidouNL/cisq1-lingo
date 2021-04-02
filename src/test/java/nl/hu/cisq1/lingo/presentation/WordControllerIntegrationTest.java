@@ -1,6 +1,8 @@
 package nl.hu.cisq1.lingo.presentation;
 
 import nl.hu.cisq1.lingo.CiTestConfiguration;
+import nl.hu.cisq1.lingo.domain.Word;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(CiTestConfiguration.class)
 @AutoConfigureMockMvc
 class WordControllerIntegrationTest {
-
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     @DisplayName("only supports 5, 6 and 7 letter words")
     void notSupportedWordLength() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders
+        RequestBuilder badRequest = MockMvcRequestBuilders
                 .get("/words/random")
                 .param("length", "8");
-
-        mockMvc.perform(request)
+        mockMvc.perform(badRequest)
                 .andExpect(status().isBadRequest());
     }
 
