@@ -1,6 +1,8 @@
 package nl.hu.cisq1.lingo.domain;
 
+import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
 import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
+import nl.hu.cisq1.lingo.domain.exception.WordAlreadyGuessedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoundTest {
     private Round round;
-    private Feedback feedbackMoord;
 
     @BeforeEach
     public void init() {
@@ -72,9 +73,18 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("last Feedback of round")
+    @DisplayName("check if the attempt is the same as the last feedback")
     void lastFeedback() {
-        feedbackMoord = round.guessWord("moord");
-        assertEquals(feedbackMoord, round.lastFeedback());
+        Feedback feedback = round.guessWord("moord");
+        assertEquals(feedback, round.lastFeedback());
+    }
+
+    @Test
+    @DisplayName("exception: word is already guessed")
+    void wordAlreadyGuessed() {
+        round.guessWord("woord");
+        assertThrows(WordAlreadyGuessedException.class, () -> {
+            round.guessWord("soort");
+        });
     }
 }
