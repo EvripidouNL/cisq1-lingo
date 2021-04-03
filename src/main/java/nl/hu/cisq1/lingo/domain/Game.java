@@ -36,15 +36,13 @@ public class Game {
         this.status = Status.WAITING_FOR_ROUND;
     }
 
-    public int calculateScoreAndGiveStatus() {
+    public void calculateScoreAndGiveStatus() {
         if (lastRound().lastFeedback().isWordGuessed()) {
             this.status = Status.WAITING_FOR_ROUND;
             this.score += 5 * (5 - lastRound().getFeedbacks().size()) + 5;
         } else if (lastRound().getFeedbacks().size() >= 5) {
             this.status = Status.GAME_ENDED;
         }
-
-        return score;
     }
 
     public Round newRound(Word word) {

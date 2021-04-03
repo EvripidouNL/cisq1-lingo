@@ -51,7 +51,7 @@ public class Round {
     }
 
     public Feedback guessWord(String attempt) {
-        if (this.feedbacks.size() >= 6) {
+        if (this.feedbacks.size() >= 5) {
             throw new RoundAttemptLimitException();
         }
 

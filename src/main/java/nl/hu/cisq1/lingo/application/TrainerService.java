@@ -62,11 +62,12 @@ public class TrainerService {
         Game game = findById(id);
 
         game.lastRound().guessWord(attempt);
+        game.calculateScoreAndGiveStatus();
 
         this.gameRepository.save(game);
         return gameMapper.toGameDTO(
                 game,
-                game.calculateScoreAndGiveStatus(),
+                game.getScore(),
                 game.lastRound().lastFeedback().giveHint());
     }
 }

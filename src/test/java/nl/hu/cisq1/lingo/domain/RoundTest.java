@@ -22,8 +22,6 @@ class RoundTest {
         Word word = new Word("woord");
 
         round = new Round(word,  new ArrayList<>());
-
-        feedbackMoord = round.guessWord("moord");
     }
 
     @Test
@@ -76,6 +74,7 @@ class RoundTest {
     @Test
     @DisplayName("last Feedback of round")
     void lastFeedback() {
+        feedbackMoord = round.guessWord("moord");
         assertEquals(feedbackMoord, round.lastFeedback());
     }
 }
