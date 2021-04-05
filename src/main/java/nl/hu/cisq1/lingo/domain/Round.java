@@ -79,6 +79,11 @@ public class Round {
             Character letterOfGuess = attempt.charAt(index);
             Character letterOfWord = this.word.getValue().charAt(index);
 
+            if(word.getLength() != attempt.length()) {
+                marks.add(Mark.INVALID);
+                continue;
+            }
+
             if (!letterOfGuess.equals(letterOfWord)) {
                 // if the letter of the guess doesn't match the letter of the word add 0 (false)
                 letterMatch.add(0);
