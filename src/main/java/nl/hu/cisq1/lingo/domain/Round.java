@@ -64,22 +64,23 @@ public class Round {
             throw new WordAlreadyGuessedException();
         }
 
+        Feedback feedback;
+
         if (attempt.length() == word.getLength()) {
-            Feedback feedback = new Feedback(attempt, generateMarks(attempt));
-            feedbacks.add(feedback);
-            return feedback;
+            feedback = new Feedback(attempt, generateMarks(attempt));
         } else {
-            Feedback feedback = new Feedback(attempt, generateInvalidMarks(attempt));
-            feedbacks.add(feedback);
-            return feedback;
+            feedback = new Feedback(attempt, generateInvalidMarks());
         }
+
+        feedbacks.add(feedback);
+        return feedback;
     }
 
-    private List<Mark> generateInvalidMarks(String attempt) {
+    private List<Mark> generateInvalidMarks() {
         List<Mark> marks = new ArrayList<>();
         // to show the invalid marks to the user
 
-        for (int i=0; i< attempt.length(); i++) {
+        for (int i=0; i< word.getLength(); i++) {
             marks.add(Mark.INVALID);
         }
 

@@ -45,8 +45,17 @@ class GameMapperTest {
     }
 
     @Test
-    @DisplayName("check if a game and hint is null")
-    void gameAndHintNull() {
+    @DisplayName("game exists and hint is null")
+    void hintIsNull() {
+        game.newRound(word);
+        GameDTO gameDTO = gameMapper.toGameDTO(game, null);
+
+        assertNull(gameDTO.getHint());
+    }
+
+    @Test
+    @DisplayName("game and hint is null")
+    void gameAndHintIsNull() {
         GameDTO gameDTO = gameMapper.toGameDTO(null, null);
 
         assertNull(gameDTO);
