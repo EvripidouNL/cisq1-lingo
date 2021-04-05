@@ -67,7 +67,6 @@ public class Round {
         return generateMarks(attempt);
     }
 
-
     private Feedback generateMarks(String attempt) {
         List<Integer> letterMatch = new ArrayList<>();
         // letterMatch to check if a guessedLetter is correct or not correct
