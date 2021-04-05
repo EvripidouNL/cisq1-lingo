@@ -75,50 +75,54 @@ public class Round {
         List<Mark> marks = new ArrayList<>();
         // to show the right marks to the user
 
-        for (int index = 0; index < this.word.getLength(); index++) {
-            Character letterOfGuess = attempt.charAt(index);
-            Character letterOfWord = this.word.getValue().charAt(index);
+        if (attempt.length() == word.getLength()) {
+            // only do the for loops if the attempt length is the same as the word length
+            for (int index = 0; index < this.word.getLength(); index++) {
+                Character letterOfGuess = attempt.charAt(index);
+                Character letterOfWord = this.word.getValue().charAt(index);
 
-            if(word.getLength() != attempt.length()) {
-                marks.add(Mark.INVALID);
-                continue;
-            }
-
-            if (!letterOfGuess.equals(letterOfWord)) {
-                // if the letter of the guess doesn't match the letter of the word add 0 (false)
-                letterMatch.add(0);
-            } else {
-                // if the letter of the guess doesn't match the letter of the word add 1 (true)
-                letterMatch.add(1);
-            }
-        }
-
-        for (int index = 0; index < attempt.length(); index++) {
-            Character letterOfWord = this.word.getValue().charAt(index);
-
-            if (letterMatch.get(index).equals(0)) {
-                // if the match is false add the letter to lettersRemain arrayList
-                lettersRemain.add(letterOfWord);
-            }
-        }
-
-        for (int index = 0; index < attempt.length(); index++) {
-            Character letterOfGuess = attempt.charAt(index);
-
-            if (letterMatch.get(index).equals(0)) {
-                // check for the letters that were not correct
-                if (lettersRemain.contains(letterOfGuess)) {
-                    // if the guess has letters that are also in the lettersRemain
-                    marks.add(Mark.PRESENT);
-                    // remove the present letters of lettersRemain
-                    lettersRemain.remove(letterOfGuess);
+                if (!letterOfGuess.equals(letterOfWord)) {
+                    // if the letter of the guess doesn't match the letter of the word add 0 (false)
+                    letterMatch.add(0);
                 } else {
-                    // if the guess has no letters that are in lettersRemain
-                    marks.add(Mark.ABSENT);
+                    // if the letter of the guess doesn't match the letter of the word add 1 (true)
+                    letterMatch.add(1);
                 }
-            } else if (letterMatch.get(index).equals(1)) {
-                // if the guessedLetter is equal to the letterMatch
-                marks.add(Mark.CORRECT);
+            }
+
+            for (int index = 0; index < attempt.length(); index++) {
+                Character letterOfWord = this.word.getValue().charAt(index);
+
+                if (letterMatch.get(index).equals(0)) {
+                    // if the match is false add the letter to lettersRemain arrayList
+                    lettersRemain.add(letterOfWord);
+                }
+            }
+
+
+            for (int index = 0; index < attempt.length(); index++) {
+                Character letterOfGuess = attempt.charAt(index);
+
+                if (letterMatch.get(index).equals(0)) {
+                    // check for the letters that were not correct
+                    if (lettersRemain.contains(letterOfGuess)) {
+                        // if the guess has letters that are also in the lettersRemain
+                        marks.add(Mark.PRESENT);
+                        // remove the present letters of lettersRemain
+                        lettersRemain.remove(letterOfGuess);
+                    } else {
+                        // if the guess has no letters that are in lettersRemain
+                        marks.add(Mark.ABSENT);
+                    }
+                } else if (letterMatch.get(index).equals(1)) {
+                    // if the guessedLetter is equal to the letterMatch
+                    marks.add(Mark.CORRECT);
+                }
+            }
+        } else {
+            // if the attempt length is not the same as the word length
+            for (int i=0; i< this.word.getLength(); i++) {
+                marks.add(Mark.INVALID);
             }
         }
 
