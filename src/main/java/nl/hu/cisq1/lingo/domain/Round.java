@@ -102,22 +102,21 @@ public class Round {
             }
         }
 
-            for (int index = 0; index < attempt.length(); index++) {
-                Character letterOfGuess = attempt.charAt(index);
-                Character letterOfWord = this.word.getValue().charAt(index);
+        for (int index = 0; index < attempt.length(); index++) {
+            Character letterOfGuess = attempt.charAt(index);
+            Character letterOfWord = this.word.getValue().charAt(index);
 
-                if (lettersRemain.contains(letterOfGuess)) {
-                    // if the guess has letters that are also in the word
-                    marks.add(Mark.PRESENT);
-                    // remove the present letters of lettersRemain
-                    lettersRemain.remove(letterOfGuess);
-                    } else if (!letterOfGuess.equals(letterOfWord)) {
-                        // if the guess has no letters that are in the word
-                        marks.add(Mark.ABSENT);
-                    } else {
-                    marks.add(Mark.CORRECT);
-                }
+            if (letterOfGuess.equals(letterOfWord)) {
+                marks.add(Mark.CORRECT);
+            } else if (lettersRemain.contains(letterOfGuess)) {
+                // if the guess has letters that are also in the word
+                marks.add(Mark.PRESENT);
+                lettersRemain.remove(letterOfGuess);
+                // remove the present letters of lettersRemain
+            } else {
+                marks.add(Mark.ABSENT);
             }
+        }
 
         return marks;
     }
