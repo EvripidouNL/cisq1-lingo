@@ -5,8 +5,6 @@ import nl.hu.cisq1.lingo.domain.Feedback;
 import nl.hu.cisq1.lingo.domain.Hint;
 import nl.hu.cisq1.lingo.domain.Status;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -22,7 +20,7 @@ public class GameDTO {
 
     private Status status;
 
-    private List<Feedback> feedbacks;
+    private Feedback feedback;
 
     private Hint hint;
 }

@@ -31,7 +31,7 @@ class GameMapperTest {
     @DisplayName("from the gamemapper to the gameDTO")
     void toGameDTO() {
         game.newRound(word);
-        GameDTO gameDTO = gameMapper.toGameDTO(game, game.lastRound().startRound());
+        GameDTO gameDTO = gameMapper.toGameDTO(game, null, game.lastRound().startRound());
 
         List<Character> expectedHint = List.of('w', '.', '.', '.', '.');
 
@@ -40,7 +40,7 @@ class GameMapperTest {
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
         assertEquals("PLAYING", gameDTO.getStatus().toString());
-        assertEquals(0, gameDTO.getFeedbacks().size());
+        assertNull(gameDTO.getFeedback());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
     }
 
@@ -48,15 +48,16 @@ class GameMapperTest {
     @DisplayName("game exists and hint is null")
     void hintIsNull() {
         game.newRound(word);
-        GameDTO gameDTO = gameMapper.toGameDTO(game, null);
+        GameDTO gameDTO = gameMapper.toGameDTO(game, null, null);
 
+        assertNull(gameDTO.getFeedback());
         assertNull(gameDTO.getHint());
     }
 
     @Test
     @DisplayName("game and hint is null")
     void gameAndHintIsNull() {
-        GameDTO gameDTO = gameMapper.toGameDTO(null, null);
+        GameDTO gameDTO = gameMapper.toGameDTO(null, null, null);
 
         assertNull(gameDTO);
     }

@@ -38,6 +38,7 @@ public class TrainerService {
 
         return gameMapper.toGameDTO(
                 game,
+                null,
                 game.lastRound().startRound());
     }
 
@@ -53,6 +54,7 @@ public class TrainerService {
 
         return gameMapper.toGameDTO(
                 game,
+                null,
                 game.lastRound().startRound());
     }
 
@@ -65,6 +67,7 @@ public class TrainerService {
         this.gameRepository.save(game);
         return gameMapper.toGameDTO(
                 game,
+                game.lastRound().lastFeedback(),
                 game.lastRound().lastFeedback().giveHint());
     }
 }
