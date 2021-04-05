@@ -64,12 +64,15 @@ public class Round {
             throw new WordAlreadyGuessedException();
         }
 
-        return generateMarks(attempt);
+        Feedback feedback = new Feedback(attempt, generateMarks(attempt));
+        feedbacks.add(feedback);
+
+        return feedback;
     }
 
-    private Feedback generateMarks(String attempt) {
+    private List<Mark> generateMarks(String attempt) {
         List<Character> lettersRemain = new ArrayList<>();
-        // lettersRemain to check if a guessedLetter is present or absent
+        // to show the right amount of presented letters
         List<Mark> marks = new ArrayList<>();
         // to show the right marks to the user
 
@@ -89,29 +92,24 @@ public class Round {
                 Character letterOfWord = this.word.getValue().charAt(index);
 
                 if (lettersRemain.contains(letterOfGuess)) {
-                    // if the guess has letters that are also in the lettersRemain
+                    // if the guess has letters that are also in the word
                     marks.add(Mark.PRESENT);
                     // remove the present letters of lettersRemain
                     lettersRemain.remove(letterOfGuess);
                     } else if (!letterOfGuess.equals(letterOfWord)) {
-                        // if the guess has no letters that are in lettersRemain
+                        // if the guess has no letters that are in the word
                         marks.add(Mark.ABSENT);
                     } else {
-                    // if the guessedLetter is equal to the letterMatch
                     marks.add(Mark.CORRECT);
                 }
             }
         } else {
             // if the attempt length is not the same as the word length
             for (int i=0; i< attempt.length(); i++) {
-                if (attempt.length() != word.getLength())
-                    marks.add(Mark.INVALID);
+                marks.add(Mark.INVALID);
             }
         }
 
-        Feedback feedback = new Feedback(attempt, marks);
-        feedbacks.add(feedback);
-
-        return feedback;
+        return marks;
     }
 }
