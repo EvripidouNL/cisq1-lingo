@@ -35,6 +35,10 @@ public class Round {
         this.feedbacks = feedbacks;
     }
 
+    public Feedback lastFeedback() {
+        return this.feedbacks.get(this.feedbacks.size() -1);
+    }
+
     public Hint startRound() {
         List<Character> characters = new ArrayList<>();
 
@@ -60,6 +64,11 @@ public class Round {
             throw new WordAlreadyGuessedException();
         }
 
+        return generateMarks(attempt);
+    }
+
+
+    private Feedback generateMarks(String attempt) {
         List<Integer> letterMatch = new ArrayList<>();
         // letterMatch to check if a guessedLetter is correct or not correct
         List<Character> lettersRemain = new ArrayList<>();
@@ -113,9 +122,5 @@ public class Round {
         feedbacks.add(feedback);
 
         return feedback;
-    }
-
-    public Feedback lastFeedback() {
-        return this.feedbacks.get(this.feedbacks.size() -1);
     }
 }
