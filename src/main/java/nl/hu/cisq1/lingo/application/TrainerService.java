@@ -29,7 +29,7 @@ public class TrainerService {
 
     public GameDTO startNewGame() {
         String randomWord = wordService.provideRandomWord(5);
-        Word word = new Word(randomWord);
+        Word word = new Word("woord");
 
         Game game = new Game(0, new ArrayList<>());
         game.newRound(word);
