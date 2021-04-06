@@ -3,7 +3,6 @@ package nl.hu.cisq1.lingo.presentation;
 import nl.hu.cisq1.lingo.application.TrainerService;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
