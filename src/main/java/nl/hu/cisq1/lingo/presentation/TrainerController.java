@@ -29,7 +29,7 @@ public class TrainerController {
 
     @PostMapping("/game/{id}")
     // For making a guess
-    public GameDTO makeGuess(@PathVariable Long id, @Validated @RequestBody GuessDTO guessDTO) {
+    public GameDTO makeGuess(@PathVariable Long id, @RequestBody GuessDTO guessDTO) {
         return trainerService.makeGuess(id, guessDTO.getAttempt());
     }
 }
