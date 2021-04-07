@@ -1,6 +1,9 @@
 package nl.hu.cisq1.lingo.presentation.dto;
 
-import nl.hu.cisq1.lingo.domain.*;
+import nl.hu.cisq1.lingo.domain.Feedback;
+import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
+import nl.hu.cisq1.lingo.domain.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
