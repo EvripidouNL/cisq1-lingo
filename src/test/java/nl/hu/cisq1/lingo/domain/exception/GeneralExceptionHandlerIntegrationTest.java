@@ -1,8 +1,9 @@
 package nl.hu.cisq1.lingo.domain.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.jayway.jsonpath.JsonPath;
 import nl.hu.cisq1.lingo.CiTestConfiguration;
+import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +15,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.transaction.Transactional;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,9 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Import(CiTestConfiguration.class)
 @AutoConfigureMockMvc
+@Transactional
 class GeneralExceptionHandlerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private SpringGameRepository gameRepository;
 
     @MockBean
     private GuessDTO guessDTO;
@@ -39,10 +47,10 @@ class GeneralExceptionHandlerIntegrationTest {
         RequestBuilder newGameRequest = MockMvcRequestBuilders
                 .post("/lingo/games");
 
-        String gameJson = mockMvc.perform(newGameRequest)
-                .andReturn().getResponse().getContentAsString();
+        MockHttpServletResponse response = mockMvc.perform(newGameRequest).andReturn().getResponse();
+        Integer gameId = JsonPath.read(response.getContentAsString(), "$.gameId");
 
-        game = new Gson().fromJson(gameJson, Game.class);
+        game = gameRepository.getOne(gameId.longValue());
     }
 
     @Test
@@ -76,10 +84,10 @@ class GeneralExceptionHandlerIntegrationTest {
                 .get("/lingo/game/" + game.getGameId())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        String gameJson = mockMvc.perform(gameInformationRequest)
-                .andReturn().getResponse().getContentAsString();
+        MockHttpServletResponse response = mockMvc.perform(gameInformationRequest).andReturn().getResponse();
+        Integer gameId = JsonPath.read(response.getContentAsString(), "$.gameId");
 
-        game = new Gson().fromJson(gameJson, Game.class);
+        game = gameRepository.getOne(gameId.longValue());
 
         mockMvc.perform(guessRequest)
                 .andExpect(status().isConflict())
