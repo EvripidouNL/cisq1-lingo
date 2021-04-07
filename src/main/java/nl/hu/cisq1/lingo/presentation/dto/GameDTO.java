@@ -1,6 +1,9 @@
 package nl.hu.cisq1.lingo.presentation.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import nl.hu.cisq1.lingo.domain.Feedback;
 import nl.hu.cisq1.lingo.domain.Hint;
 import nl.hu.cisq1.lingo.domain.Status;

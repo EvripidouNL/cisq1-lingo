@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import lombok.Data;
+
 import java.util.List;
 
 @Data

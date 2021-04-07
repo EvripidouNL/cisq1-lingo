@@ -3,6 +3,7 @@ package nl.hu.cisq1.lingo.data;
 import nl.hu.cisq1.lingo.domain.Word;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.Optional;
 
 /**

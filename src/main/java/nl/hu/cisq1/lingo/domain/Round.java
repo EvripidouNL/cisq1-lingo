@@ -1,10 +1,12 @@
 package nl.hu.cisq1.lingo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.hu.cisq1.lingo.domain.exception.GameEndedException;
 import nl.hu.cisq1.lingo.domain.exception.WordAlreadyGuessedException;
 import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

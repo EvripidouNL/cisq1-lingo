@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.domain;
 
 import lombok.Getter;
 import nl.hu.cisq1.lingo.domain.exception.WordLengthNotSupportedException;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

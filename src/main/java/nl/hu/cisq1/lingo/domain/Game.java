@@ -1,8 +1,10 @@
 package nl.hu.cisq1.lingo.domain;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
 import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
