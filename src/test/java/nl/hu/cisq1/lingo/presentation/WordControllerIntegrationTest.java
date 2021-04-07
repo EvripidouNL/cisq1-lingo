@@ -37,11 +37,11 @@ class WordControllerIntegrationTest {
     @Test
     @DisplayName("only supports 5, 6 and 7 letter words")
     void notSupportedWordLength() throws Exception {
-        RequestBuilder badRequest = MockMvcRequestBuilders
+        RequestBuilder notFound = MockMvcRequestBuilders
                 .get("/words/random")
                 .param("length", "8");
-        mockMvc.perform(badRequest)
-                .andExpect(status().isBadRequest());
+        mockMvc.perform(notFound)
+                .andExpect(status().isNotFound());
     }
 
     @Test

@@ -1,8 +1,6 @@
 package nl.hu.cisq1.lingo.presentation.dto;
 
-import nl.hu.cisq1.lingo.domain.Game;
-import nl.hu.cisq1.lingo.domain.Status;
-import nl.hu.cisq1.lingo.domain.Word;
+import nl.hu.cisq1.lingo.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
-class GameMapperTest {
+class GameMapperIntegrationTest {
     private Game game;
     private Word word;
 
@@ -48,8 +46,8 @@ class GameMapperTest {
     }
 
     @Test
-    @DisplayName("game exists and hint is null")
-    void hintIsNull() {
+    @DisplayName("game exists and feedback and hint is null")
+    void hintAndFeedbackIsNull() {
         game.newRound(word);
         GameDTO gameDTO = gameMapper.toGameDTO(game, null, null);
 
@@ -58,8 +56,18 @@ class GameMapperTest {
     }
 
     @Test
-    @DisplayName("game and hint is null")
-    void gameAndHintIsNull() {
+    @DisplayName("game and feedback exists and hint is null")
+    void hintIsNull() {
+        game.newRound(word);
+        Feedback feedback = new Feedback();
+        GameDTO gameDTO = gameMapper.toGameDTO(game, feedback, null);
+
+        assertNull(gameDTO.getHint());
+    }
+
+    @Test
+    @DisplayName("game, feedback and hint is null")
+    void gameFeedbackAndHintIsNull() {
         GameDTO gameDTO = gameMapper.toGameDTO(null, null, null);
 
         assertNull(gameDTO);
