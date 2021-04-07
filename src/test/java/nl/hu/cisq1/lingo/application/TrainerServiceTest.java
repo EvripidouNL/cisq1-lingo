@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
@@ -33,7 +34,7 @@ class TrainerServiceTest {
 
     @BeforeEach
     public void init() {
-        game = new Game(0, new ArrayList<>());
+        game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
         word = new Word("woord");
         game.newRound(word);
 
@@ -51,13 +52,12 @@ class TrainerServiceTest {
                 .thenReturn(Optional.of(game));
     }
 
-
     @ParameterizedTest
     @DisplayName("requests a game by id from the repository")
     @MethodSource("gameByIdExamples")
     void findGameById(Long id, Game game) {
         when(gameRepository.findById(id))
-                .thenReturn(Optional.of(new Game(0, new ArrayList<>())));
+                .thenReturn(Optional.of(new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND)));
 
         String result = trainerService.findById(id).toString();
 
@@ -66,9 +66,9 @@ class TrainerServiceTest {
 
     static Stream<Arguments> gameByIdExamples() {
         return Stream.of(
-                Arguments.of(1L, new Game(0, new ArrayList<>())),
-                Arguments.of(2L, new Game(0, new ArrayList<>())),
-                Arguments.of(3L, new Game(0, new ArrayList<>()))
+                Arguments.of(1L, new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND)),
+                Arguments.of(2L, new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND)),
+                Arguments.of(3L, new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND))
         );
     }
 

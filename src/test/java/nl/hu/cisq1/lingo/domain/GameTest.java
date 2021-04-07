@@ -20,7 +20,7 @@ class GameTest {
 
     @BeforeEach
     public void init() {
-        game = new Game(0, new ArrayList<>());
+        game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
         Word word = new Word("woord");
         newRound = game.newRound(word);
     }
@@ -28,32 +28,33 @@ class GameTest {
     @ParameterizedTest
     @MethodSource("provideGuessExamples")
     @DisplayName("calculate score based on attempts and show game status")
-    void calculateScoreAndGiveStatus(String word, List<Feedback> feedbacks, Status status, int score) {
-        Word actualWord = new Word(word);
-        Game game = new Game(0, new ArrayList<>());
+    void calculateScoreAndGiveStatus(int attempts, Status status, int score) {
+        Word actualWord = new Word("woord");
+        Game game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
 
         game.newRound(actualWord);
 
-        game.setStatus(status);
-
         Round round = game.lastRound();
 
-        round.setFeedbacks(feedbacks);
+        round.setAttempts(attempts);
+        // to set the round attempts
+
+        round.guessWord(actualWord.getValue());
+        // attempts +1 by fuction guessWord
 
         game.calculateScoreAndGiveStatus();
 
         assertEquals(score, game.getScore());
+        assertEquals(status, game.getStatus());
     }
 
     private static Stream<Arguments> provideGuessExamples() {
         return Stream.of(
-                Arguments.of("woord", List.of(new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 25),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 20),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 15),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 10),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 5),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.WAITING_FOR_ROUND, 0),
-                Arguments.of("woord", List.of(new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback(), new Feedback("noord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT))), Status.GAME_ENDED, 0)
+                Arguments.of(0, Status.WAITING_FOR_ROUND, 25),
+                Arguments.of(1, Status.WAITING_FOR_ROUND, 20),
+                Arguments.of(2, Status.WAITING_FOR_ROUND, 15),
+                Arguments.of(3, Status.WAITING_FOR_ROUND, 10),
+                Arguments.of(4, Status.WAITING_FOR_ROUND, 5)
         );
     }
 

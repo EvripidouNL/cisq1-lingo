@@ -32,8 +32,6 @@ class TrainerServiceIntegrationTest {
     private Game game;
     private Word word;
 
-
-
     @BeforeEach
     public void init() {
         gameDTONewGame = trainerService.startNewGame();

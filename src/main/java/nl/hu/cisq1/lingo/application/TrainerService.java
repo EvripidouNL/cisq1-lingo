@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
@@ -31,7 +32,7 @@ public class TrainerService {
         String randomWord = wordService.provideRandomWord(5);
         Word word = new Word(randomWord);
 
-        Game game = new Game(0, new ArrayList<>());
+        Game game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
         game.newRound(word);
 
         this.gameRepository.save(game);

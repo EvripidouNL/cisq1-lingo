@@ -30,17 +30,18 @@ public class Game {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Status status;
 
-    public Game(int score, List<Round> rounds) {
+    public Game(int score, List<Round> rounds, Status status) {
         this.score = score;
         this.rounds = rounds;
-        this.status = Status.WAITING_FOR_ROUND;
+        this.status = status;
     }
 
     public void calculateScoreAndGiveStatus() {
         if (lastRound().lastFeedback().isWordGuessed()) {
+            this.score += 5 * (5 - lastRound().getAttempts()) + 5;
             this.status = Status.WAITING_FOR_ROUND;
-            this.score += 5 * (5 - lastRound().getFeedbacks().size()) + 5;
-        } else if (lastRound().getFeedbacks().size() >= 5) {
+        } else if (lastRound().getAttempts() >= 5) {
+            this.score += 5 * (5 - lastRound().getAttempts()) + 5;
             this.status = Status.GAME_ENDED;
         }
     }
@@ -64,7 +65,7 @@ public class Game {
     }
 
     public int attemptsLeft() {
-        return 5 - this.lastRound().getFeedbacks().size();
+        return 5 - this.lastRound().getAttempts();
     }
 
     public int wordLengthBasedOnRounds() {

@@ -5,6 +5,7 @@ import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.presentation.dto.GuessDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,17 +40,17 @@ class TrainerControllerIntegrationTest {
     @MockBean
     private SpringWordRepository wordRepository;
 
+    @MockBean
+    private GuessDTO guessDTO;
+
     private Game game;
     private Word word;
-    private GuessDTO guessDTO;
 
     @BeforeEach
     public void init() {
-        game = new Game(0, new ArrayList<>());
+        game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
         word = new Word("woord");
         game.newRound(word);
-
-        guessDTO = new GuessDTO();
 
         when(gameRepository.findById(0L))
                 .thenReturn(Optional.of(game));
@@ -106,8 +105,10 @@ class TrainerControllerIntegrationTest {
     @Test
     @DisplayName("make a guess on a lingo game")
     void makeGuess() throws Exception {
-        guessDTO.setAttempt("moord");
-        String guessBody = new ObjectMapper().writeValueAsString(guessDTO);
+        when(guessDTO.getAttempt())
+                .thenReturn("moord");
+
+        String guessBody = new ObjectMapper().writeValueAsString(guessDTO.getAttempt());
 
         String[] expectedHint = { ".", "o", "o", "r", "d" };
 

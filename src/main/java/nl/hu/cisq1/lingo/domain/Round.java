@@ -2,7 +2,7 @@ package nl.hu.cisq1.lingo.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
+import nl.hu.cisq1.lingo.domain.exception.GameEndedException;
 import nl.hu.cisq1.lingo.domain.exception.WordAlreadyGuessedException;
 import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
@@ -24,6 +24,9 @@ public class Round {
     @JsonIgnore
     @JoinColumn(name = "word")
     private Word word;
+
+    @Column(name = "attempts")
+    private int attempts;
 
     @OneToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -56,8 +59,8 @@ public class Round {
     }
 
     public Feedback guessWord(String attempt) {
-        if (this.feedbacks.size() >= 5) {
-            throw new RoundAttemptLimitException();
+        if (this.attempts >= 5) {
+            throw new GameEndedException(Status.GAME_ENDED);
         }
 
         if (!this.feedbacks.isEmpty() && lastFeedback().isWordGuessed()) {
@@ -72,7 +75,8 @@ public class Round {
             feedback = new Feedback(attempt, generateInvalidMarks());
         }
 
-        feedbacks.add(feedback);
+        this.attempts++;
+        this.feedbacks.add(feedback);
         return feedback;
     }
 

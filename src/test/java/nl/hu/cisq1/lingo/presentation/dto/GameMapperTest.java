@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.presentation.dto;
 
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.Word;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,7 @@ class GameMapperTest {
     @BeforeEach
     public void init() {
         word = new Word("woord");
-        game = new Game(0, new ArrayList<>());
+        game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
     }
 
     @Test

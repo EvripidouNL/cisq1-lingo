@@ -1,7 +1,6 @@
 package nl.hu.cisq1.lingo.domain;
 
-import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
-import nl.hu.cisq1.lingo.domain.exception.RoundAttemptLimitException;
+import nl.hu.cisq1.lingo.domain.exception.GameEndedException;
 import nl.hu.cisq1.lingo.domain.exception.WordAlreadyGuessedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +51,7 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("exception: the attempt limit is reached! You may not make another guess!")
+    @DisplayName("exception: the attempt limit is reached! The game is ended!")
     void attemptLimitReached() {
         round.guessWord("moord");
         round.guessWord("noord");
@@ -60,7 +59,7 @@ class RoundTest {
         round.guessWord("hoort");
         round.guessWord("spoor");
 
-        assertThrows(RoundAttemptLimitException.class, () -> {
+        assertThrows(GameEndedException.class, () -> {
             round.guessWord("soort");
         });
     }
