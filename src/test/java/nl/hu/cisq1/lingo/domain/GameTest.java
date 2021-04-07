@@ -29,19 +29,17 @@ class GameTest {
     @ParameterizedTest
     @MethodSource("provideGuessExamples")
     @DisplayName("calculate score based on attempts and show game status")
-    void calculateScoreAndGiveStatus(int attempts, Status status, int score) {
+    void calculateScoreAndGiveStatusWhenWordIsGuessed(int attempts, Status status, int score) {
         Word actualWord = new Word("woord");
         Game game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
 
-        game.newRound(actualWord);
+        Round round = game.newRound(actualWord);
 
-        Round round = game.lastRound();
+        for (int i = 1; i < attempts; i++) {
+            round.guessWord("moord");
+        }
 
-        round.setAttempts(attempts);
-        // to set the round attempts
-
-        round.guessWord(actualWord.getValue());
-        // attempts +1 by fuction guessWord
+        round.guessWord("woord");
 
         game.calculateScoreAndGiveStatus();
 
@@ -51,12 +49,30 @@ class GameTest {
 
     private static Stream<Arguments> provideGuessExamples() {
         return Stream.of(
-                Arguments.of(0, Status.WAITING_FOR_ROUND, 25),
-                Arguments.of(1, Status.WAITING_FOR_ROUND, 20),
-                Arguments.of(2, Status.WAITING_FOR_ROUND, 15),
-                Arguments.of(3, Status.WAITING_FOR_ROUND, 10),
-                Arguments.of(4, Status.WAITING_FOR_ROUND, 5)
+                Arguments.of(1, Status.WAITING_FOR_ROUND, 25),
+                Arguments.of(2, Status.WAITING_FOR_ROUND, 20),
+                Arguments.of(3, Status.WAITING_FOR_ROUND, 15),
+                Arguments.of(4, Status.WAITING_FOR_ROUND, 10),
+                Arguments.of(5, Status.WAITING_FOR_ROUND, 5)
         );
+    }
+
+    @Test
+    @DisplayName("calculate score when word is not guessed")
+    void calculateScoreAndGiveStatusWhenWordIsNotGuessed() {
+        Word actualWord = new Word("woord");
+        Game game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
+
+        Round round = game.newRound(actualWord);
+
+        round.setAttempts(4);
+
+        round.guessWord("moord");
+
+        game.calculateScoreAndGiveStatus();
+
+        assertEquals(5, game.getScore());
+        assertEquals("GAME_ENDED", game.getStatus().toString());
     }
 
     @Test
@@ -64,16 +80,6 @@ class GameTest {
     void newRound() {
         game.lastRound().guessWord("woord");
         assertEquals(1, game.getRounds().size());
-    }
-
-    @Test
-    @DisplayName("exception: the game is ended because attempts is above 5")
-    void gameEnded() {
-        game.lastRound().setAttempts(5);
-
-        assertThrows(GameEndedException.class, () -> {
-            game.lastRound().guessWord("moord");
-        });
     }
 
     @Test

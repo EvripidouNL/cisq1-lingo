@@ -53,11 +53,7 @@ class RoundTest {
     @Test
     @DisplayName("exception: the attempt limit is reached! The game is ended!")
     void attemptLimitReached() {
-        round.guessWord("moord");
-        round.guessWord("noord");
-        round.guessWord("koord");
-        round.guessWord("hoort");
-        round.guessWord("spoor");
+        round.setAttempts(5);
 
         assertThrows(GameEndedException.class, () -> {
             round.guessWord("soort");

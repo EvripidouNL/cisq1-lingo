@@ -37,12 +37,18 @@ public class Game {
     }
 
     public void calculateScoreAndGiveStatus() {
+        boolean calculateScore = false;
+
         if (lastRound().lastFeedback().isWordGuessed()) {
-            this.score += 5 * (5 - lastRound().getAttempts()) + 5;
+            calculateScore = true;
             this.status = Status.WAITING_FOR_ROUND;
         } else if (lastRound().getAttempts() >= 5) {
-            this.score += 5 * (5 - lastRound().getAttempts()) + 5;
+            calculateScore = true;
             this.status = Status.GAME_ENDED;
+        }
+
+        if (calculateScore) {
+            this.score += 5 * (5 - lastRound().getAttempts()) + 5;
         }
     }
 
