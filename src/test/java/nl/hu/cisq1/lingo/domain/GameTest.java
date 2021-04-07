@@ -1,6 +1,7 @@
 package nl.hu.cisq1.lingo.domain;
 
 import nl.hu.cisq1.lingo.domain.exception.CannotStartNewRoundException;
+import nl.hu.cisq1.lingo.domain.exception.GameEndedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,6 +64,16 @@ class GameTest {
     void newRound() {
         game.lastRound().guessWord("woord");
         assertEquals(1, game.getRounds().size());
+    }
+
+    @Test
+    @DisplayName("exception: the game is ended because attempts is above 5")
+    void gameEnded() {
+        game.lastRound().setAttempts(5);
+
+        assertThrows(GameEndedException.class, () -> {
+            game.lastRound().guessWord("moord");
+        });
     }
 
     @Test
