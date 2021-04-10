@@ -15,15 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class FeedbackTest {
     private Feedback feedbackGuessed;
     private Feedback feedbackNotGuessed;
-    private Feedback feedbackInvalid;
-    private Feedback feedbackNotInvalid;
 
     @BeforeEach
     public void init() {
         feedbackGuessed = new Feedback("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT));
         feedbackNotGuessed = new Feedback("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.CORRECT, Mark.PRESENT));
-        feedbackInvalid = new Feedback("hetzelfde", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID));
-        feedbackNotInvalid = new Feedback("woord", List.of(Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.ABSENT, Mark.PRESENT));
     }
 
     @Test
@@ -36,18 +32,6 @@ class FeedbackTest {
     @DisplayName("word is not guessed if one or more letters are incorrect")
     void wordisNotGuessed() {
         assertFalse(feedbackNotGuessed.isWordGuessed());
-    }
-
-    @Test
-    @DisplayName("guess is invalid")
-    void guessIsInvalid() {
-        assertTrue(feedbackInvalid.guessIsInvalid());
-    }
-
-    @Test
-    @DisplayName("guess is not invalid")
-    void guessIsNotInvalid() {
-        assertFalse(feedbackNotInvalid.guessIsInvalid());
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )

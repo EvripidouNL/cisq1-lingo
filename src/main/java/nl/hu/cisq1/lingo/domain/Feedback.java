@@ -36,10 +36,6 @@ public class Feedback {
         return marks.stream().allMatch(mark -> mark.equals(Mark.CORRECT));
     }
 
-    public boolean guessIsInvalid() {
-        return marks.stream().allMatch(mark -> mark.equals(Mark.INVALID));
-    }
-
     public Hint giveHint() {
         List<Character> characters = new ArrayList<>();
         int index = 0;
