@@ -26,13 +26,13 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("start round and first letter of word is shown")
+    @DisplayName("start a new round and give a hint")
     void showFirstLetterOfWord() {
         assertEquals(new Hint(List.of('w', '.', '.', '.', '.')), round.startRound());
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
-    @DisplayName("attempt compared to word")
+    @DisplayName("compare the guess to the word and give a hint")
     @MethodSource("provideGuessExamples")
     void guessWord(String word, String attempt, Hint hint) {
         Round round = new Round(new Word(word), new ArrayList<>());
@@ -69,7 +69,7 @@ class RoundTest {
     }
 
     @Test
-    @DisplayName("check if the attempt is the same as the last feedback")
+    @DisplayName("make a guess and check if the feedback is the same as the last of the round")
     void lastFeedback() {
         Feedback feedback = round.guessWord("moord");
         assertEquals(feedback, round.lastFeedback());

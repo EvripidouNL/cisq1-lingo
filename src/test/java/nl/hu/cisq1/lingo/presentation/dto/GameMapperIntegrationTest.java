@@ -32,7 +32,7 @@ class GameMapperIntegrationTest {
     }
 
     @Test
-    @DisplayName("from the gamemapper to the gameDTO")
+    @DisplayName("gamemapper provides gameDTO")
     void toGameDTO() {
         game.newRound(word);
         GameDTO gameDTO = gameMapper.toGameDTO(game, null, game.lastRound().startRound());
@@ -59,7 +59,7 @@ class GameMapperIntegrationTest {
     }
 
     @Test
-    @DisplayName("game and feedback exists and hint is null")
+    @DisplayName("game and feedback exists but hint is null")
     void hintIsNull() {
         game.newRound(word);
         Feedback feedback = new Feedback();

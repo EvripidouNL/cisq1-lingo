@@ -54,7 +54,7 @@ class TrainerServiceTest {
     }
 
     @ParameterizedTest
-    @DisplayName("requests a game by id from the repository")
+    @DisplayName("find a game by id")
     @MethodSource("gameByIdExamples")
     void findGameById(Long id, Game game) {
         when(gameRepository.findById(id))
@@ -74,7 +74,7 @@ class TrainerServiceTest {
     }
 
     @Test
-    @DisplayName("throws exception if game is not found")
+    @DisplayName("exception: the game cannot be found")
     void canNotFindGame() {
         when(gameRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -85,7 +85,7 @@ class TrainerServiceTest {
     }
 
     @Test
-    @DisplayName("starting a new game")
+    @DisplayName("create a new game")
     void newGame() {
         gameDTO = trainerService.startNewGame();
 
@@ -118,7 +118,7 @@ class TrainerServiceTest {
     }
 
     @Test
-    @DisplayName("make a guess on a lingo game")
+    @DisplayName("make a guess on a game")
     void makeGuess() {
         gameDTO = trainerService.makeGuess(0L, "moord");
 

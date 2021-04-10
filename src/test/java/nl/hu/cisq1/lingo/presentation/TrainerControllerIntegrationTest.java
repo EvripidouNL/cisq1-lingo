@@ -63,7 +63,7 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("create a new lingo game")
+    @DisplayName("create a game")
     void startNewGame() throws Exception {
         String[] expectedHint = { "w", ".", ".", ".", "." };
 
@@ -105,7 +105,7 @@ class TrainerControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("make a guess on a lingo game")
+    @DisplayName("make a guess on a game")
     void makeGuess() throws Exception {
         when(guessDTO.getAttempt())
                 .thenReturn("moord");

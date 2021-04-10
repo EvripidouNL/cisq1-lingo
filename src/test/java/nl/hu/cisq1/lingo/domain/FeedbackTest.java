@@ -35,7 +35,7 @@ class FeedbackTest {
     }
 
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
-    @DisplayName("a hint by a guessed word")
+    @DisplayName("show a hint when a guess is made")
     @MethodSource("provideHintExamples")
     void giveHint(String attempt, List<Mark> marks, Hint hint) {
         Feedback feedback = new Feedback(attempt, marks);

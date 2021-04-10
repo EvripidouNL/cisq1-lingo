@@ -25,7 +25,7 @@ class GameTest {
         newRound = game.newRound(word);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
     @MethodSource("provideGuessExamples")
     @DisplayName("calculate score based on attempts and show game status")
     void calculateScoreAndGiveStatusWhenWordIsGuessed(int attempts, Status status, int score) {
@@ -57,7 +57,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("calculate score when word is not guessed")
+    @DisplayName("calculate score when word is not guessed and give game status")
     void calculateScoreAndGiveStatusWhenWordIsNotGuessed() {
         Word actualWord = new Word("woord");
         Game game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
@@ -82,7 +82,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("cannot add new round to game when the word is not guessed")
+    @DisplayName("exception: cannot add new round to game when the word is not guessed")
     void cannotStartNewRound() {
         game.lastRound().guessWord("soort");
 
@@ -94,7 +94,7 @@ class GameTest {
     }
 
     @Test
-    @DisplayName("check if the newround the last round is")
+    @DisplayName("make a new round and check if it's the last round of the game")
     void lastRound() {
         assertEquals(newRound, game.lastRound());
     }
