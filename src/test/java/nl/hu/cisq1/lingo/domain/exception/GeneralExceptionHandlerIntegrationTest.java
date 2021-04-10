@@ -104,6 +104,27 @@ class GeneralExceptionHandlerIntegrationTest {
     }
 
     @Test
+    @DisplayName("exception: the word is already guessed")
+    void wordAlreadyGuessed() throws Exception {
+        guessDTO = new GuessDTO(game.lastRound().getWord().getValue());
+        String guessBody = new ObjectMapper().writeValueAsString(guessDTO.getAttempt());
+
+        RequestBuilder guessRequest = MockMvcRequestBuilders
+                .post("/lingo/game/" + game.getGameId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(guessBody);
+
+
+        mockMvc.perform(guessRequest)
+                .andExpect(status().isOk());
+
+        mockMvc.perform(guessRequest)
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.type", is(WordAlreadyGuessedException.class.getSimpleName())))
+                .andExpect(jsonPath("$.message", is("Word is already guessed start a new round!")));
+    }
+
+    @Test
     @DisplayName("exception: word length is not supported")
     void wordLengthNotSupportedException() throws Exception {
         RequestBuilder randomWordRequest = MockMvcRequestBuilders
