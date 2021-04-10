@@ -1,9 +1,6 @@
 package nl.hu.cisq1.lingo.presentation.dto;
 
-import nl.hu.cisq1.lingo.domain.Feedback;
-import nl.hu.cisq1.lingo.domain.Game;
-import nl.hu.cisq1.lingo.domain.Status;
-import nl.hu.cisq1.lingo.domain.Word;
+import nl.hu.cisq1.lingo.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,8 +29,8 @@ class GameMapperIntegrationTest {
     }
 
     @Test
-    @DisplayName("gamemapper provides gameDTO")
-    void toGameDTO() {
+    @DisplayName("new game to gameDTO")
+    void newGameToGameDTO() {
         game.newRound(word);
         GameDTO gameDTO = gameMapper.toGameDTO(game, null, game.lastRound().startRound());
 

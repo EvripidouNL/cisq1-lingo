@@ -47,7 +47,8 @@ class FeedbackTest {
         return Stream.of(
                 Arguments.of("woord", List.of(Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT, Mark.CORRECT), new Hint(List.of('w', 'o', 'o', 'r', 'd'))),
                 Arguments.of("woord", List.of(Mark.CORRECT, Mark.ABSENT, Mark.CORRECT, Mark.ABSENT, Mark.PRESENT), new Hint(List.of('w', '.', 'o', '.', '.'))),
-                Arguments.of("woord", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID), new Hint(List.of('.', '.', '.', '.', '.')))
+                Arguments.of("kort", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID), new Hint(List.of('.', '.', '.', '.', '.'))),
+                Arguments.of("redenen", List.of(Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID, Mark.INVALID), new Hint(List.of('.', '.', '.', '.', '.')))
         );
     }
 }

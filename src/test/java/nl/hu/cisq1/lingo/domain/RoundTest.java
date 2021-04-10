@@ -47,7 +47,9 @@ class RoundTest {
         return Stream.of(
                 Arguments.of("woord", "woord", new Hint(List.of('w', 'o', 'o', 'r', 'd'))),
                 Arguments.of("woord", "soort", new Hint(List.of('.', 'o', 'o', 'r', '.'))),
-                Arguments.of("woord", "breuk", new Hint(List.of('.', '.', '.', '.', '.')))
+                Arguments.of("woord", "waren", new Hint(List.of('w', '.', '.', '.', '.'))),
+                Arguments.of("woord", "redenen", new Hint(List.of('.', '.', '.', '.', '.'))),
+                Arguments.of("woord", "kort", new Hint(List.of('.', '.', '.', '.', '.')))
         );
     }
 
