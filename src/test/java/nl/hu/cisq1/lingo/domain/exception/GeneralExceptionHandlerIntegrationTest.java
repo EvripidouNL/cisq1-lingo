@@ -80,15 +80,6 @@ class GeneralExceptionHandlerIntegrationTest {
             mockMvc.perform(guessRequest);
         }
 
-        RequestBuilder gameInformationRequest = MockMvcRequestBuilders
-                .get("/lingo/game/" + game.getGameId())
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MockHttpServletResponse response = mockMvc.perform(gameInformationRequest).andReturn().getResponse();
-        Integer gameId = JsonPath.read(response.getContentAsString(), "$.gameId");
-
-        game = gameRepository.getOne(gameId.longValue());
-
         mockMvc.perform(guessRequest)
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.type", is(GameEndedException.class.getSimpleName())))

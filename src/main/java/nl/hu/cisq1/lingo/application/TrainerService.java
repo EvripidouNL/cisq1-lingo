@@ -29,15 +29,6 @@ public class TrainerService {
         return gameRepository.findById(id).orElseThrow(() -> new GameNotFoundException(id));
     }
 
-    public GameDTO findGameDTOById(Long id) {
-        Game game = this.findById(id);
-        return gameMapper.toGameDTO(
-                game,
-                game.lastRound().getFeedbacks().isEmpty() ? null : game.lastRound().lastFeedback(),
-                game.lastRound().getFeedbacks().isEmpty() ? null : game.lastRound().lastFeedback().giveHint()
-        );
-    }
-
     public GameDTO startNewGame() {
         String randomWord = wordService.provideRandomWord(5);
         Word word = new Word(randomWord);

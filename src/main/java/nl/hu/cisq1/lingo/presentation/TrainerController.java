@@ -31,10 +31,4 @@ public class TrainerController {
     public GameDTO makeGuess(@PathVariable Long id, @RequestBody GuessDTO guessDTO) {
         return trainerService.makeGuess(id, guessDTO.getAttempt());
     }
-
-    @GetMapping("/game/{id}")
-    // The information of a game
-    public GameDTO getGame(@PathVariable Long id) {
-        return trainerService.findGameDTOById(id);
-    }
 }
