@@ -94,7 +94,7 @@ class TrainerServiceTest {
         assertEquals(0, gameDTO.getScore());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTO.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTO.getStatus());
         assertNull(gameDTO.getFeedback());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
     }
@@ -111,7 +111,7 @@ class TrainerServiceTest {
         assertEquals(25, gameDTO.getScore());
         assertEquals(2, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTO.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTO.getStatus());
         assertNull(gameDTO.getFeedback());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
         assertEquals(6, game.lastRound().getWord().getLength());
@@ -127,7 +127,7 @@ class TrainerServiceTest {
         assertEquals(0, gameDTO.getScore());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(4, gameDTO.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTO.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTO.getStatus());
         assertEquals(expectedHint, gameDTO.getFeedback().giveHint().getCharacterList());
         assertEquals(5, game.lastRound().getWord().getLength());
     }

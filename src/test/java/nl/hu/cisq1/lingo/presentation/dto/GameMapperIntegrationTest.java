@@ -43,7 +43,7 @@ class GameMapperIntegrationTest {
         assertEquals(0, gameDTO.getScore());
         assertEquals(1, gameDTO.getRoundNumber());
         assertEquals(5, gameDTO.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTO.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTO.getStatus());
         assertNull(gameDTO.getFeedback());
         assertEquals(expectedHint, gameDTO.getHint().getCharacterList());
     }

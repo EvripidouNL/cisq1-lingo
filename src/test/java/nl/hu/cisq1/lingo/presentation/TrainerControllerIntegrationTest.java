@@ -74,7 +74,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
-                .andExpect(jsonPath("$.status", is("PLAYING")))
+                .andExpect(jsonPath("$.status", is(Status.PLAYING)))
                 .andExpect(jsonPath("$.feedback", is(nullValue())))
                 .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
@@ -97,7 +97,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.score", is(25)))
                 .andExpect(jsonPath("$.roundNumber", is(2)))
                 .andExpect(jsonPath("$.attemptsLeft", is(5)))
-                .andExpect(jsonPath("$.status", is("PLAYING")))
+                .andExpect(jsonPath("$.status", is(Status.PLAYING)))
                 .andExpect(jsonPath("$.feedback", is(nullValue())))
                 .andExpect(jsonPath("$.hint.characterList", hasSize(6)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));
@@ -123,7 +123,7 @@ class TrainerControllerIntegrationTest {
                 .andExpect(jsonPath("$.score", is(0)))
                 .andExpect(jsonPath("$.roundNumber", is(1)))
                 .andExpect(jsonPath("$.attemptsLeft", is(4)))
-                .andExpect(jsonPath("$.status", is("PLAYING")))
+                .andExpect(jsonPath("$.status", is(Status.PLAYING)))
                 .andExpect(jsonPath("$.feedback").exists())
                 .andExpect(jsonPath("$.hint.characterList", hasSize(5)))
                 .andExpect(jsonPath("$.hint.characterList", containsInRelativeOrder(expectedHint)));

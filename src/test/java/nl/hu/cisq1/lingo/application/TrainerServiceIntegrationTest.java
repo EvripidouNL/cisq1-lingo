@@ -3,6 +3,7 @@ package nl.hu.cisq1.lingo.application;
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
 import nl.hu.cisq1.lingo.domain.Game;
+import nl.hu.cisq1.lingo.domain.Status;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +54,7 @@ class TrainerServiceIntegrationTest {
 
         assertEquals(0, gameDTONewGame.getScore());
         assertEquals(5, gameDTONewGame.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTONewGame.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTONewGame.getStatus());
         assertEquals(1, gameDTONewGame.getRoundNumber());
         assertEquals(expectedHint, gameDTONewGame.getHint().getCharacterList());
     }
@@ -69,7 +70,7 @@ class TrainerServiceIntegrationTest {
 
         assertEquals(25, gameDTONewRound.getScore());
         assertEquals(5, gameDTONewRound.getAttemptsLeft());
-        assertEquals("PLAYING", gameDTONewRound.getStatus().toString());
+        assertEquals(Status.PLAYING, gameDTONewGame.getStatus());
         assertEquals(2, gameDTONewRound.getRoundNumber());
         assertEquals(expectedHint, gameDTONewRound.getHint().getCharacterList());
     }
@@ -86,7 +87,7 @@ class TrainerServiceIntegrationTest {
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
         assertEquals(20, gameDTOGuess.getScore());
         assertEquals(3, gameDTOGuess.getAttemptsLeft());
-        assertEquals("WAITING_FOR_ROUND", gameDTOGuess.getStatus().toString());
+        assertEquals(Status.WAITING_FOR_ROUND, gameDTONewGame.getStatus());
         assertEquals(1, gameDTOGuess.getRoundNumber());
         assertEquals(expectedHint, gameDTOGuess.getHint().getCharacterList());
     }

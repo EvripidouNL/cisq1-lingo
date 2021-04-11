@@ -77,13 +77,20 @@ class GameTest {
     @DisplayName("add one new round to game when the word is guessed")
     void newRound() {
         game.lastRound().guessWord("woord");
-        assertEquals(1, game.getRounds().size());
+        game.calculateScoreAndGiveStatus();
+
+        Word word = new Word("oranje");
+        game.newRound(word);
+
+        assertEquals(2, game.getRounds().size());
     }
 
     @Test
     @DisplayName("exception: cannot add new round to game when the word is not guessed")
     void cannotStartNewRound() {
         game.lastRound().guessWord("soort");
+
+        game.calculateScoreAndGiveStatus();
 
         Word newRoundWord = new Word("oranje");
 
