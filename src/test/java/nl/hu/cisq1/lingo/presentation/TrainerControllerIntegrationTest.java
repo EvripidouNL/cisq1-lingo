@@ -46,12 +46,11 @@ class TrainerControllerIntegrationTest {
     private GuessDTO guessDTO;
 
     private Game game;
-    private Word word;
 
     @BeforeEach
     public void init() {
         game = new Game(0, new ArrayList<>(), Status.WAITING_FOR_ROUND);
-        word = new Word("woord");
+        Word word = new Word("woord");
         game.newRound(word);
 
         when(gameRepository.findById(0L))
