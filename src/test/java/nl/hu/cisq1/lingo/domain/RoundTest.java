@@ -34,8 +34,8 @@ class RoundTest {
     @ParameterizedTest(name = "Test #{index} | {0} | {1} | {2} " )
     @DisplayName("compare the guess to the word and give a hint")
     @MethodSource("provideGuessExamples")
-    void guessWord(String word, String attempt, Hint hint) {
-        Round round = new Round(new Word(word), new ArrayList<>());
+    void guessWord(Word word, String attempt, Hint hint) {
+        round = new Round(word, new ArrayList<>());
 
         round.startRound();
         Feedback feedback = round.guessWord(attempt);

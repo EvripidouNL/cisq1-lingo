@@ -2,6 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
+import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Game;
 import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
@@ -15,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import javax.transaction.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,14 +35,12 @@ class TrainerServiceIntegrationTest {
 
     private GameDTO gameDTONewGame;
     private Game game;
-    private Word word;
 
     @BeforeEach
     public void init() {
         gameDTONewGame = trainerService.startNewGame();
 
-        game = gameRepository.findById(gameDTONewGame.getGameId()).orElseThrow();
-        word = game.lastRound().getWord();
+        game = gameRepository.getOne(gameDTONewGame.getGameId());
     }
 
     @Test
@@ -51,25 +52,29 @@ class TrainerServiceIntegrationTest {
     @Test
     @DisplayName("create a new game")
     void newGame() {
+        List<Character> expectedHint = List.of('p', '.', '.', '.', '.');
+
         assertEquals(0, gameDTONewGame.getScore());
         assertEquals(5, gameDTONewGame.getAttemptsLeft());
         assertEquals("PLAYING", gameDTONewGame.getStatus().toString());
         assertEquals(1, gameDTONewGame.getRoundNumber());
-        assertEquals(5, gameDTONewGame.getHint().getCharacterList().size());
+        assertEquals(expectedHint, gameDTONewGame.getHint().getCharacterList());
     }
 
     @Test
     @DisplayName("create a extra round in a game")
     void newRound() {
-        trainerService.makeGuess(game.getGameId(), word.getValue());
+        trainerService.makeGuess(game.getGameId(), "pizza");
 
         GameDTO gameDTONewRound = trainerService.newRound(game.getGameId());
+
+        List<Character> expectedHint = List.of('o', '.', '.', '.', '.', '.');
 
         assertEquals(25, gameDTONewRound.getScore());
         assertEquals(5, gameDTONewRound.getAttemptsLeft());
         assertEquals("PLAYING", gameDTONewRound.getStatus().toString());
         assertEquals(2, gameDTONewRound.getRoundNumber());
-        assertEquals(6, gameDTONewRound.getHint().getCharacterList().size());
+        assertEquals(expectedHint, gameDTONewRound.getHint().getCharacterList());
     }
 
     @Test
@@ -77,13 +82,15 @@ class TrainerServiceIntegrationTest {
     void guessWord() {
         trainerService.makeGuess(game.getGameId(), "moord");
 
-        GameDTO gameDTOGuess = trainerService.makeGuess(game.getGameId(), word.getValue());
+        GameDTO gameDTOGuess = trainerService.makeGuess(game.getGameId(), "pizza");
+
+        List<Character> expectedHint = List.of('p', 'i', 'z', 'z', 'a');
 
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
         assertEquals(20, gameDTOGuess.getScore());
         assertEquals(3, gameDTOGuess.getAttemptsLeft());
         assertEquals("WAITING_FOR_ROUND", gameDTOGuess.getStatus().toString());
         assertEquals(1, gameDTOGuess.getRoundNumber());
-        assertEquals(5, gameDTOGuess.getHint().getCharacterList().size());
+        assertEquals(expectedHint, gameDTOGuess.getHint().getCharacterList());
     }
 }
