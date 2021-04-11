@@ -87,7 +87,7 @@ class TrainerServiceIntegrationTest {
         assertEquals(game.lastRound().lastFeedback().getAttempt(), game.lastRound().getWord().getValue());
         assertEquals(20, gameDTOGuess.getScore());
         assertEquals(3, gameDTOGuess.getAttemptsLeft());
-        assertEquals(Status.WAITING_FOR_ROUND, gameDTONewGame.getStatus());
+        assertEquals(Status.WAITING_FOR_ROUND, gameDTOGuess.getStatus());
         assertEquals(1, gameDTOGuess.getRoundNumber());
         assertEquals(expectedHint, gameDTOGuess.getHint().getCharacterList());
     }
