@@ -2,9 +2,7 @@ package nl.hu.cisq1.lingo.application;
 
 import nl.hu.cisq1.lingo.CiTestConfiguration;
 import nl.hu.cisq1.lingo.data.SpringGameRepository;
-import nl.hu.cisq1.lingo.data.SpringWordRepository;
 import nl.hu.cisq1.lingo.domain.Game;
-import nl.hu.cisq1.lingo.domain.Word;
 import nl.hu.cisq1.lingo.domain.exception.GameNotFoundException;
 import nl.hu.cisq1.lingo.presentation.dto.GameDTO;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
