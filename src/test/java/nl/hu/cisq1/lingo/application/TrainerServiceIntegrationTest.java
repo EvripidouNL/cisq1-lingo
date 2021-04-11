@@ -25,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @AutoConfigureMockMvc
 @Transactional
 class TrainerServiceIntegrationTest {
+    // runs with mvnw test -Dspring.profiles.active=ci
+
     @Autowired
     private TrainerService trainerService;
 
